@@ -2,3 +2,7 @@ language: java
 
 notifications:
 email: false
+
+deploy:
+  provider: heroku
+  
