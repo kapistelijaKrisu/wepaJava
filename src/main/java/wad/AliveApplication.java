@@ -11,14 +11,14 @@ public class AliveApplication {
     }
 
     public static String githubUrl() {
-        return "";
+        return "github.com/";
     }
 
     public static String travisUrl() {
-        return "";
+        return "travis-ci.org/";
     }
 
     public static String herokuUrl() {
-        return "";
+        return "herokuapp.com";
     }
 }
