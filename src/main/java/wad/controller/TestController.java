@@ -1,17 +1,5 @@
 package wad.controller;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.transaction.Transactional;
 import wad.domain.*;
 import wad.repository.*;
@@ -30,6 +18,8 @@ public class TestController {
     private CategoryRepository catRepo;
     @Autowired
     private FileObjectRepository fileRepo;
+    @Autowired
+    private ViewRepository viewRepo;
     
     private boolean init = false;
 
@@ -51,20 +41,27 @@ public class TestController {
             //FileObject foo = getFileObject("bananas.gif");
           //  fileRepo.save(fo);
         //    fileRepo.save(foo);
-            
-            
-            News na = new News(
+                       
+                
+        News na = new News(
                     "omfg news!",
                     "can u believe there are news D;",
                     "this is text for news blargh",
-                    LocalDateTime.now(), null, null, null);
+                    null);
 
             News nb = new News(
                     "omfg more news!",
                     "this is ingression thingy ",
                     "this is text for news number2",
-                    LocalDateTime.now(), null, null, null);
+                    null);
 
+            View v = new View(2017, 49, 5, na);
+            View vv = new View(2017, 49, 10, nb);
+            viewRepo.save(v);
+            viewRepo.save(vv); 
+            
+            na.getViews().add(v);
+            nb.getViews().add(vv);
             // newsRepo.save(nb);
             // newsRepo.save(na);
             na.addWriter(wb);

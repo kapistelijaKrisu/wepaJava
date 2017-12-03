@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,15 +20,20 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 @Data
 @Entity
-public class News extends AbstractPersistable<Long> implements Comparable<News>{
+public class News extends AbstractPersistable<Long> implements Comparable<News> {
 
     private String label;
     private String ingressi;
     private String text;
-    
     private LocalDateTime published;
     @OneToOne
     private FileObject kuva;
+
+    //views
+    @OneToMany(mappedBy = "news")
+    private Set<View> views;
+
+    //writer
     @ManyToMany(cascade = {
         CascadeType.PERSIST,
         CascadeType.MERGE
@@ -36,13 +42,15 @@ public class News extends AbstractPersistable<Long> implements Comparable<News>{
             joinColumns = @JoinColumn(name = "news_id"),
             inverseJoinColumns = @JoinColumn(name = "writer_id"))
     private Set<Writer> writers;
+
+    //writer
     @ManyToMany(cascade = {
         CascadeType.PERSIST,
         CascadeType.MERGE
     }, fetch = FetchType.EAGER)
     @JoinTable(name = "leCats",
             joinColumns = @JoinColumn(name = "news_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
+            inverseJoinColumns = @JoinColumn(name = "cats_id"))
     private Set<Category> categories;
 
     public void addWriter(Writer w) {
@@ -52,6 +60,20 @@ public class News extends AbstractPersistable<Long> implements Comparable<News>{
         writers.add(w);
 
     }
+
+    public News(String label, String ingress, String text, FileObject kuva) {
+        this.label = label;
+        this.ingressi = ingress;
+        this.text = text;
+        this.published = LocalDateTime.now();
+        this.kuva = kuva;
+
+        writers = new TreeSet<>();
+        categories = new TreeSet<>();
+        views = new TreeSet<>();
+
+    }
+
     @Override
     public int compareTo(News o) {
         return this.published.compareTo(o.getPublished());

@@ -1,8 +1,6 @@
 package wad.controller;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,12 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import wad.domain.Category;
-import wad.domain.FileObject;
-import wad.domain.News;
-import wad.repository.CategoryRepository;
-import wad.repository.FileObjectRepository;
-import wad.repository.NewsRepository;
+import wad.domain.*;
+import wad.repository.*;
+import wad.service.TimeSerice;
 
 @Controller
 public class NewsController {
@@ -31,6 +26,10 @@ public class NewsController {
     private CategoryRepository catRepo;
     @Autowired
     private FileObjectRepository fileRepo;
+    @Autowired
+    private ViewRepository viewRepo;
+    @Autowired
+    private TimeSerice timeCalculator;
 
     @GetMapping("/")
     public String list(Model model) {
@@ -42,22 +41,6 @@ public class NewsController {
         return "index";
     }
 
-    @GetMapping("/news/category/{id}")
-    public String listByCat(Model model, @PathVariable long id) {
-        Pageable page = PageRequest.of(0, 5, Sort.Direction.DESC, "published");
-        if (id != 0) {
-            Category cat = catRepo.findById(id).get();
-            List<News> news = newsRepo.findByCategories(cat, page);
-            model.addAttribute("news", news);
-        } else {
-            Page<News> news = newsRepo.findAll(page);
-            model.addAttribute("news", news);
-        }
-
-        Pageable sort = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "name");
-        model.addAttribute("categories", catRepo.findAll(sort));
-        return "sorted";
-    }
 
     @GetMapping("/add")
     public String addform(Model model) {
@@ -66,8 +49,24 @@ public class NewsController {
 
     @GetMapping("/news/{id}")
     public String readSingle(Model model, @PathVariable Long id) {
-        model.addAttribute("news", newsRepo.findById(id).get());
+        News news = newsRepo.findById(id).get();
+        int week = timeCalculator.getCurrentWeekNumber();
+        int year = timeCalculator.getCurrentYear();
+        View views = viewRepo.findByNewsAndYearAndWeek(news, year, week);
+        if (views == null) {
+            views = new View(year, week, 1, news);
+            viewRepo.save(views);
+            news.getViews().add(views);
+            newsRepo.save(news);
+        } else {
+            views.setViews(views.getViews()+1);
+            viewRepo.save(views);
+        }
+        System.out.println(views.getViews());
+        News test = newsRepo.findById(id).get();
+        model.addAttribute("news", news);
         return "single";
+
     }
 
     @PostMapping("/news")
@@ -76,7 +75,6 @@ public class NewsController {
             @RequestParam("ingressi") String ingressi,
             @RequestParam("text") String teksti
     ) throws IOException {
-
         if (file != null) {
 
             String[] fileFrags = file.getOriginalFilename().split("\\.");
@@ -87,10 +85,10 @@ public class NewsController {
 
             FileObject fo = new FileObject(null, file.getName(), file.getContentType(), file.getSize(), file.getBytes());
             fileRepo.save(fo);
-            News news = new News(otsikko, ingressi, teksti, LocalDateTime.now(), fo, null, null);
+            News news = new News(otsikko, ingressi, teksti, fo);
             newsRepo.save(news);
         } else {
-            News news = new News(otsikko, ingressi, teksti, LocalDateTime.now(), null, null, null);
+            News news = new News(otsikko, ingressi, teksti, null);
             newsRepo.save(news);
         }
 

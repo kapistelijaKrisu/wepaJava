@@ -20,15 +20,16 @@ public class ImageController {
      
     @GetMapping("/images/{id}")
     public ResponseEntity<byte[]> viewFile(@PathVariable Long id) {
+        try {
         News fo = newsRepo.findById(id).get();
-        if (fo == null) {
-            return null;
-        }
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(fo.getKuva().getContentType()));
         headers.setContentLength(fo.getKuva().getContentLength());
         headers.add("Content-Disposition", "attachment; filename=" + fo.getKuva().getName());
 
         return new ResponseEntity<>(fo.getKuva().getContent(), headers, HttpStatus.CREATED);
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 }
