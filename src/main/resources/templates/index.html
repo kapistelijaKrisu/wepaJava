@@ -1,27 +1,118 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <meta charset="UTF-8" />
-        <title>Title</title>
+        <title>Le News!</title>
     </head>
+
     <body>
-
-        <h2>Items</h2>
-
+               
+        <h1>Uutiset</h1>
+        <a href="/init">Alusta testinäytteet</a><br/>
+        <a href="/add">Lisää uutinen!</a><br/>
+        <br/>
         <div>
-            <ul>
-                <li th:each="item : ${items}" th:text="${item.name}"></li>
-            </ul>
-        </div>
+<ul>
+    <li><a href="">Listaa julkaisuajan perusteella</a></li>
+    <li><a href="">Listaa edellisen viikon aikana kertyneiden lukumäärien perusteella</a></li>
+    <li><a href="">Listaa kategorian perusteella</a></li>
+    <li><a href="https://docs.google.com/document/d/1Tqo_8ZnSKx_AHJjZgQAKkZQvKPTt71Q7_LaV1PK3Tu4/edit">tehtävänanto</a></li>
+</ul>
+           <div class="dropdown">
+<button onclick="myFunction()" class="dropbtn">Dropdown</button>
+  <div id="myDropdown" class="dropdown-content">
+      <a href="/news/category/0">Kaikki</a>
+    <a th:each="categ:${categories}" th:href="@{/news/category/{id}(id=${categ.id})}" th:text="${categ.name}">categ name</a>
+  
+               
+  </div>
+</div> 
+        
+</div>
+<div>
+    <ul>
+        <li th:each="neew:${news}">
+            <h4 th:text="${neew.label}">uutisen otsikko</h4><br/>
+            Ingressi: <span th:text="${neew.ingressi}"/><br/>                
+            <img th:src="@{/images/{id}(id=${neew.id})}"/><br/>
 
+            <a th:href="@{/news/{id}(id=${neew.id})}" >Lue lisää!</a><br/>      
+                Kirjoittajat:<br/>
+                <ul>
+                    <li th:each="writer : ${neew.writers}" th:text="${writer.name}"/>
+                </ul>
+                Kategoriat<br/>
+                <ul>
+                    <li th:each="cat : ${neew.categories}" th:text="${cat.name}"/>
+                </ul>
 
-        <h2>Add new</h2>
+            </li>
 
-        <form method="POST" th:action="@{/}">
-            <input type="text" name="name"/>
-            <input type="submit" value="Add"/>
-        </form>
+        </ul>
+                </div>
+     <script>
+         /* When the user clicks on the button, 
+          toggle between hiding and showing the dropdown content */
+         function myFunction() {
+             document.getElementById("myDropdown").classList.toggle("show");
+         }
 
+// Close the dropdown if the user clicks outside of it
+         window.onclick = function (event) {
+             if (!event.target.matches('.dropbtn')) {
+
+                 var dropdowns = document.getElementsByClassName("dropdown-content");
+                 var i;
+                 for (i = 0; i < dropdowns.length; i++) {
+                     var openDropdown = dropdowns[i];
+                     if (openDropdown.classList.contains('show')) {
+                         openDropdown.classList.remove('show');
+                     }
+                 }
+             }
+         };
+</script>
     </body>
+    
+    
+    
+<style>
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
 
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
+</style>
 </html>

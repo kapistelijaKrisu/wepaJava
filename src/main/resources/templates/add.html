@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>News manager</title>
+    </head>
+    <body>
+        <form method="POST" th:action="@{/news}" enctype="multipart/form-data">
+            <input type="text" name="otsikko" id="otsikko" />
+            <input type="text" name="ingressi" id="ingressi" />
+            <input type="text" name="text" id="text" />
+            <input type="file" name="file" id="file"/>
+            <input type="submit" value="Add!"/>
+        </form>
+    </body>
+</html>

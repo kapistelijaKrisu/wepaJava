@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title >Le news!</title>
+    </head>
+
+    <body>
+        <a href="/">Etusivulle</a><br/>
+        <div>
+            <h1 th:text="${news.label}"></h1>
+            <img th:src="@{/images/{id}(id=${news.id})}"/><br/>
+            <p th:text="${news.ingressi}"/>
+            <p th:text="${news.text}"/>  
+        </div>
+        <br/><br/><br/>
+        <div>
+            Kirjoittajat:<br/>
+            <ul>
+                <li th:each="writer : ${news.writers}" th:text="${writer.name}"/>
+            </ul>
+            Kategoriat<br/>
+
+            <a th:each="categ:${news.categories}" th:href="@{/news/category/{id}(id=${categ.id})}" th:text="${categ.name}">categ name</a>
+
+
+        </div>
+    </body>
+</html>

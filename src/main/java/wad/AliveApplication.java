@@ -10,15 +10,4 @@ public class AliveApplication {
         SpringApplication.run(AliveApplication.class, args);
     }
 
-    public static String githubUrl() {
-        return "https://github.com/kapistelijaKrisu/wepaJava";
-    }
-
-    public static String travisUrl() {
-        return "https://travis-ci.org/kapistelijaKrisu/wepaJava";
-    }
-
-    public static String herokuUrl() {
-        return "https://wepajava.herokuapp.com/";
-    }
 }
