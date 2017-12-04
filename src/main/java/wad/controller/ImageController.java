@@ -21,13 +21,13 @@ public class ImageController {
     @GetMapping("/images/{id}")
     public ResponseEntity<byte[]> viewFile(@PathVariable Long id) {
         try {
-        News fo = newsRepo.findById(id).get();
+        News news = newsRepo.getOne(id);
         final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(fo.getKuva().getContentType()));
-        headers.setContentLength(fo.getKuva().getContentLength());
-        headers.add("Content-Disposition", "attachment; filename=" + fo.getKuva().getName());
+        headers.setContentType(MediaType.parseMediaType(news.getKuva().getContentType()));
+        headers.setContentLength(news.getKuva().getContentLength());
+        headers.add("Content-Disposition", "attachment; filename=" + news.getKuva().getName());
 
-        return new ResponseEntity<>(fo.getKuva().getContent(), headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(news.getKuva().getContent(), headers, HttpStatus.CREATED);
         } catch (NullPointerException e) {
             return null;
         }

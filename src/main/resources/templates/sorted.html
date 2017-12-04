@@ -41,11 +41,9 @@
         </div>
 
         <div th:each="page:${pages}">
-            <span th:text="${page}">sivu</span><br/>
-            <a th:href="@{/{link}/{page}(link=${link})}" th:text="${page}"></a><br/>
-            http://news/category/4//{page}
+            <a th:href="/${{link}/{page}}" th:text="${page} "></a><br/>
             <span> </span>
-
+     
         </div>
 
         <script>

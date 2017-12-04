@@ -8,7 +8,7 @@
         <a href="/">Etusivulle</a><br/>
         <div>
             <h1 th:text="${news.label}"></h1>
-            <img th:src="@{/images/{id}(id=${news.id})}"/><br/>
+            <img th:src="@{/images/{id}(id=${news.id})}" alt="Kuva ei näy!"/><br/>
             <p th:text="${news.ingressi}"/>
             <p th:text="${news.text}"/>  
         </div>
