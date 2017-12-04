@@ -36,20 +36,20 @@ public class NewsController {
       //  Pageable page = PageRequest.of(0, 5, Sort.Direction.DESC, "published");
       //  Page<News> news = newsRepo.findAll(page);
         //model.addAttribute("news", news);
-        Pageable sort = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "name");
-        model.addAttribute("categories", catRepo.findAll(sort));
+      //  Pageable sort = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "name");
+    //    model.addAttribute("categories", catRepo.findAll(sort));
         return "index";
     }
-    /*
-    @GetMapping("/news/newes/{page}")
-    public String listNewest(Model model) {
-        Pageable page = PageRequest.of(0, 5, Sort.Direction.DESC, "published");
+    
+    @GetMapping("/news/newes/{pageNro}")
+    public String listNewest(Model model, @PathVariable int pageNro) {
+        Pageable page = PageRequest.of(pageNro, 5, Sort.Direction.DESC, "published");
         Page<News> news = newsRepo.findAll(page);
         model.addAttribute("news", news);
         Pageable sort = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "name");
         model.addAttribute("categories", catRepo.findAll(sort));
         return "index";
-    }*/
+    }
 
 
     @GetMapping("/add")
