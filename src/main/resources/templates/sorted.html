@@ -5,7 +5,6 @@
     </head>
 
     <body>
-
         <h1>Uutiset</h1>
         <a href="/init">Alusta testinäytteet</a><br/>
         <a href="/add">Lisää uutinen!</a><br/>
@@ -13,12 +12,18 @@
         <div>
 
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-                <div id="myDropdown" class="dropdown-content">
+                <button onclick="myFunction('categoryDropdown')" class="dropbtn">Kategoriat</button>
+                <div id="categoryDropdown" class="dropdown-content">
+                    <a th:each="categ:${categories}" th:href="@{/news/category/{id}/0(id=${categ.id})}" th:text="${categ.name}">categ name</a>
+                </div>
+            </div> 
+
+            <div class="dropdown">
+                <button onclick="myFunction('genericDropdown')" class="dropbtn">Muut lajitteluperusteet</button>
+                <div id="genericDropdown" class="dropdown-content">
                     <a href="/news/category/0">Kaikki</a>
-                    <a th:each="categ:${categories}" th:href="@{/news/category/{id}(id=${categ.id})}" th:text="${categ.name}">categ name</a>
-
-
+                    <a href="/news/newest/0">Uusimmat</a>
+                    <a href="/news/views/week/0">Viime Viikon suosituimmat</a>
                 </div>
             </div> 
 
@@ -34,14 +39,23 @@
 
             </ul>
         </div>
+
+        <div th:each="page:${pages}">
+            <span th:text="${page}">sivu</span><br/>
+            <a th:href="@{/{link}/{page}(link=${link})}" th:text="${page}"></a><br/>
+            http://news/category/4//{page}
+            <span> </span>
+
+        </div>
+
         <script>
             /* When the user clicks on the button, 
              toggle between hiding and showing the dropdown content */
-            function myFunction() {
-                document.getElementById("myDropdown").classList.toggle("show");
+            function myFunction(id) {
+                document.getElementById(id).classList.toggle("show");
             }
 
-   // Close the dropdown if the user clicks outside of it
+            // Close the dropdown if the user clicks outside of it
             window.onclick = function (event) {
                 if (!event.target.matches('.dropbtn')) {
 

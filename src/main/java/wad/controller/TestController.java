@@ -55,10 +55,23 @@ public class TestController {
                     "this is text for news number2",
                     null);
 
-            View v = new View(2017, 49, 5, na);
-            View vv = new View(2017, 49, 10, nb);
+            View v = new View(2017, 48, 5, na);
+            View vv = new View(2017, 48, 10, nb);
             viewRepo.save(v);
             viewRepo.save(vv); 
+            
+            for (int i = 0; i < 11; i++) {
+                News n = new News(
+                    ""+i,
+                    "this is ingression thingy ",
+                    "this is text for news number2",
+                    null);
+                View vvv = new View(2017, 48, 10+1, n);
+                viewRepo.save(vvv);
+                n.getViews().add(v);
+                n.addCategory(cb);
+                newsRepo.save(n);
+            }
             
             na.getViews().add(v);
             nb.getViews().add(vv);

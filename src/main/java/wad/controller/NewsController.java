@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import wad.domain.*;
 import wad.repository.*;
-import wad.service.TimeSerice;
+import wad.service.TimeService;
 
 @Controller
 public class NewsController {
@@ -29,7 +29,7 @@ public class NewsController {
     @Autowired
     private ViewRepository viewRepo;
     @Autowired
-    private TimeSerice timeCalculator;
+    private TimeService timeCalculator;
 
     @GetMapping("/")
     public String list(Model model) {

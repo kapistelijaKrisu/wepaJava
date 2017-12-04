@@ -1,5 +1,6 @@
 package wad.controller;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import wad.domain.View;
 import wad.domain.News;
 import wad.repository.ViewRepository;
 import wad.repository.NewsRepository;
-import wad.service.TimeSerice;
+import wad.service.TimeService;
 import wad.service.NewsSorter;
 
 @Controller
@@ -27,7 +28,7 @@ public class ViewsController {
     @Autowired
     private ViewRepository viewRepo;
     @Autowired
-    private TimeSerice timeCalculator;
+    private TimeService timeCalculator;
     @Autowired
     private NewsSorter viewSorter;
 
@@ -36,8 +37,13 @@ public class ViewsController {
         Pageable pageable = PageRequest.of(pageNro, PAGESIZE, Sort.Direction.DESC, "views");
         int year = timeCalculator.getCurrentYear();
         int week = timeCalculator.getCurrentWeekNumber();
-        List<View> viewList = viewRepo.findByYearAndWeek(year, week, pageable);
 
+        List<View> viewList = new ArrayList<>();
+        if (week != 1) {
+            viewList = viewRepo.findByYearAndWeek(year, timeCalculator.getLastWeekNumber(), pageable);
+        } else {
+            viewList = viewRepo.findByYearAndWeek(year - 1, timeCalculator.getLastWeekNumber(), pageable);
+        }
         model.addAttribute("news", viewSorter.sortNewsByViews(viewList));
 
         if (viewList.size() < PAGESIZE * pageNro + pageNro) {
