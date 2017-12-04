@@ -31,16 +31,16 @@ public class ViewsController {
     @Autowired
     private NewsSorter viewSorter;
 
-    @GetMapping("/news/views/week/{page}")
-    public String listByViews(Model model, @PathVariable int page) {
-        Pageable pageable = PageRequest.of(page, PAGESIZE, Sort.Direction.DESC, "views");
+    @GetMapping("/news/views/week/{pageNro}")
+    public String listByViews(Model model, @PathVariable int pageNro) {
+        Pageable pageable = PageRequest.of(pageNro, PAGESIZE, Sort.Direction.DESC, "views");
         int year = timeCalculator.getCurrentYear();
         int week = timeCalculator.getCurrentWeekNumber();
         List<View> viewList = viewRepo.findByYearAndWeek(year, week, pageable);
 
         model.addAttribute("news", viewSorter.sortNewsByViews(viewList));
 
-        if (viewList.size() < PAGESIZE * page + page) {
+        if (viewList.size() < PAGESIZE * pageNro + pageNro) {
             String message = "No more viewed news this week! D:";
             model.addAttribute("message", message);
         }

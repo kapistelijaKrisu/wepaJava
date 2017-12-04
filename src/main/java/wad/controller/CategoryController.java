@@ -23,9 +23,9 @@ public class CategoryController {
     private CategoryRepository catRepo;
 
     
-    @GetMapping("/news/category/{id}")
-    public String listByCat(Model model, @PathVariable long id) {
-        Pageable page = PageRequest.of(0, 5, Sort.Direction.DESC, "published");
+    @GetMapping("/news/category/{id}/{pageNro}")
+    public String listByCat(Model model, @PathVariable long id, @PathVariable int pageNro) {
+        Pageable page = PageRequest.of(pageNro, 5, Sort.Direction.DESC, "published");
         if (id != 0) {
             Category cat = catRepo.findById(id).get();
             List<News> news = newsRepo.findByCategories(cat, page);

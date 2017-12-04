@@ -21,7 +21,9 @@
 <button onclick="myFunction()" class="dropbtn">Dropdown</button>
   <div id="myDropdown" class="dropdown-content">
       <a href="/news/category/0">Kaikki</a>
-    <a th:each="categ:${categories}" th:href="@{/news/category/{id}(id=${categ.id})}" th:text="${categ.name}">categ name</a>
+      <a href="/news/newest/0">Uusimmat</a>
+      <a href="/news/views/0">Viime Viikon suosituimmat</a>
+    <a th:each="categ:${categories}" th:href="@{/news/category/{id}/0(id=${categ.id})}" th:text="${categ.name}">categ name</a>
   
                
   </div>

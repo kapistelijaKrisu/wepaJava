@@ -33,15 +33,15 @@ public class NewsController {
 
     @GetMapping("/")
     public String list(Model model) {
-      //  Pageable page = PageRequest.of(0, 5, Sort.Direction.DESC, "published");
-      //  Page<News> news = newsRepo.findAll(page);
-        //model.addAttribute("news", news);
-      //  Pageable sort = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "name");
-    //    model.addAttribute("categories", catRepo.findAll(sort));
+        Pageable page = PageRequest.of(0, 5, Sort.Direction.DESC, "published");
+        Page<News> news = newsRepo.findAll(page);
+        model.addAttribute("news", news);
+        Pageable sort = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "name");
+        model.addAttribute("categories", catRepo.findAll(sort));
         return "index";
     }
     
-    @GetMapping("/news/newes/{pageNro}")
+    @GetMapping("/news/newest/{pageNro}")
     public String listNewest(Model model, @PathVariable int pageNro) {
         Pageable page = PageRequest.of(pageNro, 5, Sort.Direction.DESC, "published");
         Page<News> news = newsRepo.findAll(page);
