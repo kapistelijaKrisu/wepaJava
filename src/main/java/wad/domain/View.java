@@ -22,7 +22,7 @@ public class View extends AbstractPersistable<Long> implements Comparable<View>{
     private int week;  
     private long views;
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name="ID_NEWS")
     private News news;
     
  
