@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import wad.domain.News;
@@ -14,6 +15,7 @@ import wad.repository.CategoryRepository;
 import wad.repository.NewsRepository;
 import wad.service.ViewInfoGenerator;
 
+@Transactional
 @Controller
 public class MainPageController {
     @Autowired
