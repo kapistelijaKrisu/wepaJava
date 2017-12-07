@@ -63,7 +63,11 @@ public class View extends AbstractPersistable<Long> implements Comparable<View>{
             return week - o.getWeek();
         }
     }
-
+    
+    @Override
+    public String toString() {
+        return "views: "+views+ " year.week:" + year +"."+week;
+    }
     
 
 

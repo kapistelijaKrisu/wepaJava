@@ -16,9 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 import wad.domain.*;
 import wad.repository.*;
 import wad.service.TimeService;
+import wad.service.ViewUpdater;
 
 @Controller
-public class NewsController {
+public class SingleNewsController {
 
     @Autowired
     private NewsRepository newsRepo;
@@ -29,56 +30,23 @@ public class NewsController {
     @Autowired
     private ViewRepository viewRepo;
     @Autowired
-    private TimeService timeCalculator;
-
-    @GetMapping("/")
-    public String list(Model model) {
-        Pageable page = PageRequest.of(0, 5, Sort.Direction.DESC, "published");
-        Page<News> news = newsRepo.findAll(page);
-        model.addAttribute("news", news);
-        Pageable sort = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "name");
-        model.addAttribute("categories", catRepo.findAll(sort));
-        return "index";
-    }
+    ViewUpdater viewUpdater;
     
-    @GetMapping("/news/newest/{pageNro}")
-    public String listNewest(Model model, @PathVariable int pageNro) {
-        Pageable page = PageRequest.of(pageNro, 5, Sort.Direction.DESC, "published");
-        Page<News> news = newsRepo.findAll(page);
-        model.addAttribute("news", news);
-        Pageable sort = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "name");
-        model.addAttribute("categories", catRepo.findAll(sort));
-        return "index";
-    }
-
-
+    
     @GetMapping("/add")
     public String addform(Model model) {
         return "add";
     }
-
+//get single
     @GetMapping("/news/{id}")
     public String readSingle(Model model, @PathVariable Long id) {
         News news = newsRepo.findById(id).get();
-        int week = timeCalculator.getCurrentWeekNumber();
-        int year = timeCalculator.getCurrentYear();
-        View views = viewRepo.findByNewsAndYearAndWeek(news, year, week);
-        if (views == null) {
-            views = new View(year, week, 1, news);
-            viewRepo.save(views);
-            news.getViews().add(views);
-            newsRepo.save(news);
-        } else {
-            views.setViews(views.getViews()+1);
-            viewRepo.save(views);
-        }
-        System.out.println(views.getViews());
-        News test = newsRepo.findById(id).get();
+        viewUpdater.addView(news);
         model.addAttribute("news", news);
         return "single";
 
     }
-
+//lisää
     @PostMapping("/news")
     public String save(@RequestParam("file") MultipartFile file,
             @RequestParam("otsikko") String otsikko,

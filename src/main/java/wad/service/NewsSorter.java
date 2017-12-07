@@ -1,4 +1,3 @@
-
 package wad.service;
 
 import java.util.ArrayList;
@@ -9,8 +8,8 @@ import wad.domain.News;
 import wad.domain.View;
 
 @Service
-public class NewsSorter implements Comparator<View>{
-    
+public class NewsSorter implements Comparator<View> {
+
     public List<News> sortNewsByViews(List<View> views) {
         views.sort(this);
         List<News> news = new ArrayList<>();
@@ -22,7 +21,14 @@ public class NewsSorter implements Comparator<View>{
 
     @Override
     public int compare(View o1, View o2) {
-       return (int) (o1.getViews() - o2.getViews());
+        int diff = (int) (o2.getViews() - o1.getViews());
+
+        if (diff == 0) {
+            diff = o2.compareTo(o1);
+
+        }
+        return diff;
+
     }
-    
+
 }

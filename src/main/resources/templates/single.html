@@ -20,7 +20,7 @@
             </ul>
             Kategoriat<br/>
 
-            <a th:each="categ:${news.categories}" th:href="@{/news/category/{id}(id=${categ.id})}" th:text="${categ.name}">categ name</a>
+            <a th:each="categ:${news.categories}" th:href="@{/news/category/{id}/0(id=${categ.id})}" th:text="${categ.name}">categ name</a>
 
 
         </div>

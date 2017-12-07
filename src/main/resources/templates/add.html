@@ -6,11 +6,12 @@
     </head>
     <body>
         <form method="POST" th:action="@{/news}" enctype="multipart/form-data">
-            <input type="text" name="otsikko" id="otsikko" />
-            <input type="text" name="ingressi" id="ingressi" />
-            <input type="text" name="text" id="text" />
-            <input type="file" name="file" id="file"/>
-            <input type="submit" value="Add!"/>
+            Otsikko:<input type="text" name="otsikko" id="otsikko" /><br/>
+            Ingressi:<input type="text" name="ingressi" id="ingressi"/><br/>
+            Uutisen tekst <br/>
+            <textarea cols=50 rows=10 name="text" id="text"></textarea> <br/>
+            Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>
+            <input type="submit" value="Julkaise!"/>
         </form>
     </body>
 </html>

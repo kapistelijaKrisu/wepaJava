@@ -6,6 +6,7 @@ import wad.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import wad.service.TimeService;
 
 @Controller
 public class TestController {
@@ -20,7 +21,8 @@ public class TestController {
     private FileObjectRepository fileRepo;
     @Autowired
     private ViewRepository viewRepo;
-    
+    @Autowired
+    private TimeService timeCalculator;
     private boolean init = false;
 
     @GetMapping("/init")
@@ -42,7 +44,8 @@ public class TestController {
           //  fileRepo.save(fo);
         //    fileRepo.save(foo);
                        
-                
+              int week = timeCalculator.getLastWeekNumber();
+      
         News na = new News(
                     "omfg news!",
                     "can u believe there are news D;",
@@ -55,8 +58,8 @@ public class TestController {
                     "this is text for news number2",
                     null);
 
-            View v = new View(2017, 48, 5, na);
-            View vv = new View(2017, 48, 10, nb);
+            View v = new View(2017, week, 5, na);
+            View vv = new View(2017, week, 10, nb);
             viewRepo.save(v);
             viewRepo.save(vv); 
             
@@ -66,7 +69,7 @@ public class TestController {
                     "this is ingression thingy ",
                     "this is text for news number2",
                     null);
-                View vvv = new View(2017, 48, 10+1, n);
+                View vvv = new View(2017, week, 3, n);
                 viewRepo.save(vvv);
                 n.getViews().add(v);
                 n.addCategory(cb);
