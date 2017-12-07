@@ -19,6 +19,7 @@ import wad.service.ViewUpdater;
 
 @Controller
 public class SingleNewsController {
+
     @Autowired
     private ViewInfoGenerator viewInfo;
     @Autowired
@@ -31,7 +32,7 @@ public class SingleNewsController {
     private ViewRepository viewRepo;
     @Autowired
     ViewUpdater viewUpdater;
-    
+
     //view single
     @GetMapping("/news/{id}")
     public String readSingle(Model model, @PathVariable long id) {
@@ -39,75 +40,90 @@ public class SingleNewsController {
         News news = newsRepo.findById(id).get();
         viewUpdater.addView(news);
         model.addAttribute("news", news);
-        
+
         model.addAttribute("newest", viewInfo.getNewestNews());
         model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
         model.addAttribute("top5", viewInfo.getMostPopularNews());
         return "single";
     }
+
     //new single
     @GetMapping("/add")
     public String addform(Model model) {
         model.addAttribute("top5", viewInfo.getMostPopularNews());
         return "add";
     }
-   
+
     //single in edit
     @GetMapping("/modeNews/{id}")
     public String addform(Model model, @PathVariable long id) {
         model.addAttribute("news", newsRepo.getOne(id));
-        
+
         model.addAttribute("newest", viewInfo.getNewestNews());
         model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
         model.addAttribute("top5", viewInfo.getMostPopularNews());
         return "add";
     }
+
     //posts
     @Transactional
     @PostMapping("/makeNews")
-    public String create(@RequestParam String label, @RequestParam String lead, @RequestParam String text, @RequestParam MultipartFile file) {
-        News news  = new News(label, lead, text, null);
-        //valid   
-        newsRepo.save(news);
-        
-        try {
-            FileObject fo = new FileObject(news, file.getName(), file.getContentType(), file.getSize(), file.getBytes());
+    public String create(@RequestParam("file") MultipartFile file,
+            @RequestParam("label") String otsikko,
+            @RequestParam("lead") String ingressi,
+            @RequestParam("text") String teksti
+    ) throws IOException {
+        if (file != null) {
+
+            String[] fileFrags = file.getOriginalFilename().split("\\.");
+            String extension = fileFrags[fileFrags.length - 1];
+            // if (!extension.equals("gif") || !file.getContentType().equals("image/gif")) {
+            //    return "redirect:/";
+            //  }
+
+            FileObject fo = new FileObject(null, file.getName(), file.getContentType(), file.getSize(), file.getBytes());
             fileRepo.save(fo);
-            news.setKuva(fo);
+            News news = new News(otsikko, ingressi, teksti, fo);
             newsRepo.save(news);
-            System.out.println("succ");
-        } catch (IOException ex) {
-            Logger.getLogger(SingleNewsController.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("fail");
+        } else {
+            News news = new News(otsikko, ingressi, teksti, null);
+            newsRepo.save(news);
         }
-    
-        return "redirect:/modeNews/"+news.getId();
+
+        return "redirect:/";
     }
-   
+
     //single in edit
     @Transactional
     @PostMapping("/modeNews/{id}")
-    public String modify(@PathVariable long id, @RequestParam String label, @RequestParam String lead, @RequestParam String text, @RequestParam MultipartFile file) {
-        News news  = newsRepo.getOne(id);
-        news.setLabel(label);
-        news.setIngressi(lead);
-        news.setText(text);
-        //valid
-        newsRepo.save(news);
-        
-        try {
-            FileObject fo = new FileObject(news, file.getName(), file.getContentType(), file.getSize(), file.getBytes());
-            //valid
+    public String save(@RequestParam("file") MultipartFile file,
+            @RequestParam("label") String label,
+            @RequestParam("lead") String lead,
+            @RequestParam("text") String text,
+            @PathVariable("id") long id
+    ) throws IOException {
+        if (file != null) {
+
+            String[] fileFrags = file.getOriginalFilename().split("\\.");
+            String extension = fileFrags[fileFrags.length - 1];
+            // if (!extension.equals("gif") || !file.getContentType().equals("image/gif")) {
+            //    return "redirect:/";
+            //  }
+
+            FileObject fo = new FileObject(null, file.getName(), file.getContentType(), file.getSize(), file.getBytes());
             fileRepo.save(fo);
+            News news = newsRepo.getOne(id);
+            news.setIngressi(lead);
+            news.setLabel(label);
+            news.setText(text);
             news.setKuva(fo);
             newsRepo.save(news);
-        } catch (IOException ex) {
-            Logger.getLogger(SingleNewsController.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            News news = new News(label, lead, text, null);
+            newsRepo.save(news);
         }
-    
-        return "redirect:/modeNews/"+news.getId();
+
+        return "redirect:/";
     }
 
-
-    
 }
