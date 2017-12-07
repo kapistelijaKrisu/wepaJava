@@ -66,9 +66,9 @@
             <img th:src="@{/images/{id}(id=${news.id})}"/>
         </div>
         <div th:unless="${news}">
-            <form method="POST" th:action="@{/makeNews}" enctype="multipart/form-data">
-                Otsikko:<input type="text" name="label" id="label" /><br/>
-                Ingressi:<input type="text" name="lead" id="ingressi"/><br/>
+            <form method="POST" th:action="@{/news}" enctype="multipart/form-data">
+                Otsikko:<input type="text" name="otsikko" id="otsikko" /><br/>
+                Ingressi:<input type="text" name="ingressi" id="ingressi"/><br/>
                 Uutisen tekst <br/>
                 <textarea cols=50 rows=10 name="text" id="text"></textarea> <br/>
                 Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>

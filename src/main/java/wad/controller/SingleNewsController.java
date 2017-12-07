@@ -64,13 +64,11 @@ public class SingleNewsController {
         model.addAttribute("top5", viewInfo.getMostPopularNews());
         return "add";
     }
-
-    //posts
-    @Transactional
-    @PostMapping("/makeNews")
-    public String create(@RequestParam("file") MultipartFile file,
-            @RequestParam("label") String otsikko,
-            @RequestParam("lead") String ingressi,
+//lisää
+    @PostMapping("/news")
+    public String save(@RequestParam("file") MultipartFile file,
+            @RequestParam("otsikko") String otsikko,
+            @RequestParam("ingressi") String ingressi,
             @RequestParam("text") String teksti
     ) throws IOException {
         if (file != null) {
@@ -91,7 +89,7 @@ public class SingleNewsController {
         }
 
         return "redirect:/";
-    }
+}
 
     //single in edit
     @Transactional
