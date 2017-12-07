@@ -3,6 +3,7 @@ package wad.controller;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,11 +63,11 @@ public class SingleNewsController {
         return "add";
     }
     //posts
+    @Transactional
     @PostMapping("/makeNews")
     public String create(@RequestParam String label, @RequestParam String lead, @RequestParam String text, @RequestParam MultipartFile file) {
         News news  = new News(label, lead, text, null);
         //valid   
-        System.out.println(news.getId());
         newsRepo.save(news);
         
         try {
@@ -84,6 +85,7 @@ public class SingleNewsController {
     }
    
     //single in edit
+    @Transactional
     @PostMapping("/modeNews/{id}")
     public String modify(@PathVariable long id, @RequestParam String label, @RequestParam String lead, @RequestParam String text, @RequestParam MultipartFile file) {
         News news  = newsRepo.getOne(id);
