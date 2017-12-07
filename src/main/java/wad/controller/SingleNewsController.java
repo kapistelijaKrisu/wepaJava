@@ -14,7 +14,7 @@ import wad.domain.*;
 import wad.repository.*;
 import wad.service.ViewInfoGenerator;
 import wad.service.ViewUpdater;
-
+@Transactional
 @Controller
 public class SingleNewsController {
 
@@ -32,7 +32,6 @@ public class SingleNewsController {
     ViewUpdater viewUpdater;
 
     //view single
-    @Transactional
     @GetMapping("/news/{id}")
     public String readSingle(Model model, @PathVariable long id) {
         model.addAttribute("top5", viewInfo.getMostPopularNews());
@@ -47,7 +46,6 @@ public class SingleNewsController {
     }
 
     //new single
-    @Transactional
     @GetMapping("/add")
     public String addform(Model model) {
         model.addAttribute("top5", viewInfo.getMostPopularNews());
@@ -55,7 +53,6 @@ public class SingleNewsController {
     }
 
     //single in edit
-    @Transactional
     @GetMapping("/modeNews/{id}")
     public String addform(Model model, @PathVariable long id) {
         model.addAttribute("news", newsRepo.getOne(id));
@@ -66,7 +63,6 @@ public class SingleNewsController {
         return "add";
     }
 //lisää
-    @Transactional
     @PostMapping("/news")
     public String save(@RequestParam("file") MultipartFile file,
             @RequestParam("otsikko") String otsikko,
@@ -94,7 +90,6 @@ public class SingleNewsController {
 }
 
     //single in edit
-    @Transactional
     @PostMapping("/modeNews/{id}")
     public String save(@RequestParam("file") MultipartFile file,
             @RequestParam("label") String label,
