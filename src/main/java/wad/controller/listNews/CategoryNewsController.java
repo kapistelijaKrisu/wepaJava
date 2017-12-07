@@ -15,6 +15,7 @@ import wad.domain.Category;
 import wad.domain.News;
 import wad.repository.CategoryRepository;
 import wad.repository.NewsRepository;
+import wad.service.ViewInfoGenerator;
 
 @Controller
 public class CategoryNewsController {
@@ -24,17 +25,19 @@ public class CategoryNewsController {
     private NewsRepository newsRepo;
     @Autowired
     private CategoryRepository catRepo;
+@Autowired
+    private ViewInfoGenerator viewInfo;
 
-    @GetMapping("/news/category/{id}/{pageNro}")
-    public String listByCat(Model model, @PathVariable long id, @PathVariable int pageNro) {
-        Page<News> news = getNewsBySortType(id, pageNro);
+    @GetMapping("/news/category/{catId}/{pageNro}")
+    public String listByCat(Model model, @PathVariable long catId, @PathVariable int pageNro) {
+        Page<News> news = getNewsBySortType(catId, pageNro);
         model.addAttribute("news", news);
+        model.addAttribute("pages", getPageCount(catId, pageNro));
         
-        List<Integer> pages = getPageCount(id, pageNro);
-        model.addAttribute("pages", pages);
+        model.addAttribute("newest", viewInfo.getNewestNews());
+        model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
+        model.addAttribute("top5", viewInfo.getMostPopularNews());
 
-        Pageable sort = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "name");
-        model.addAttribute("categories", catRepo.findAll(sort));
 
         return "sorted";
     }

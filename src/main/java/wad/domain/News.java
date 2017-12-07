@@ -20,7 +20,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 @Data
 @Entity
-public class News extends AbstractPersistable<Long> implements Comparable<News> {
+public class News extends AbstractPersistable<Long> implements Comparable<News>{
 
     private String label;
     private String ingressi;
@@ -53,14 +53,6 @@ public class News extends AbstractPersistable<Long> implements Comparable<News> 
             inverseJoinColumns = @JoinColumn(name = "cats_id"))
     private Set<Category> categories;
 
-    public void addWriter(Writer w) {
-        if (writers == null) {
-            writers = new TreeSet<>();
-        }
-        writers.add(w);
-
-    }
-
     public News(String label, String ingress, String text, FileObject kuva) {
         this.label = label;
         this.ingressi = ingress;
@@ -73,10 +65,21 @@ public class News extends AbstractPersistable<Long> implements Comparable<News> 
         views = new TreeSet<>();
 
     }
+    
+    public long getTotalViewCount() {
+        long count = 0;
+        for (View view : views) {
+            count += view.getViews();
+        }
+        return count;
+    }
 
-    @Override
-    public int compareTo(News o) {
-        return this.published.compareTo(o.getPublished());
+    public void addWriter(Writer w) {
+        if (writers == null) {
+            writers = new TreeSet<>();
+        }
+        writers.add(w);
+
     }
 
     public void addCategory(Category c) {
@@ -85,5 +88,9 @@ public class News extends AbstractPersistable<Long> implements Comparable<News> 
         }
         categories.add(c);
 
+    }
+    @Override
+    public int compareTo(News o) {
+        return this.published.compareTo(o.getPublished());
     }
 }

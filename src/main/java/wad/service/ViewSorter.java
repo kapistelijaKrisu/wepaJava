@@ -8,9 +8,9 @@ import wad.domain.News;
 import wad.domain.View;
 
 @Service
-public class NewsSorter implements Comparator<View> {
+public class ViewSorter implements Comparator<View> {
 
-    public List<News> sortNewsByViews(List<View> views) {
+    public List<News> sortNewsByWeekViews(List<View> views) {
         views.sort(this);
         List<News> news = new ArrayList<>();
         views.forEach((view) -> {

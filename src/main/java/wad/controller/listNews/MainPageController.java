@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import wad.domain.News;
 import wad.repository.CategoryRepository;
 import wad.repository.NewsRepository;
+import wad.service.ViewInfoGenerator;
 
 @Controller
 public class MainPageController {
@@ -19,14 +20,18 @@ public class MainPageController {
     private NewsRepository newsRepo;
     @Autowired
     private CategoryRepository catRepo;
+    @Autowired
+    private ViewInfoGenerator viewInfo;
     
     @GetMapping("/")
     public String list(Model model) {
         Pageable page = PageRequest.of(0, 5, Sort.Direction.DESC, "published");
         Page<News> news = newsRepo.findAll(page);
         model.addAttribute("news", news);
-        Pageable sort = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "name");
-        model.addAttribute("categories", catRepo.findAll(sort));
+        
+        model.addAttribute("newest", viewInfo.getNewestNews());
+        model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
+        model.addAttribute("top5", viewInfo.getMostPopularNews());
         return "index";
 }
 }

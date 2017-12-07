@@ -5,13 +5,148 @@
         <title>News manager</title>
     </head>
     <body>
-        <form method="POST" th:action="@{/news}" enctype="multipart/form-data">
-            Otsikko:<input type="text" name="otsikko" id="otsikko" /><br/>
-            Ingressi:<input type="text" name="ingressi" id="ingressi"/><br/>
-            Uutisen tekst <br/>
-            <textarea cols=50 rows=10 name="text" id="text"></textarea> <br/>
-            Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>
-            <input type="submit" value="Julkaise!"/>
-        </form>
+        <div>
+            <div class="dropdown">
+                <a class="dropbtn" href="/">Etusivu</a>       
+            </div>
+            <div class="dropdown">
+                <button onclick="myFunction('categoryDropdown')" class="dropbtn">Kategoriat</button>
+                <div id="categoryDropdown" class="dropdown-content">
+                    <a th:each="categ:${categories}" th:href="@{/news/category/{id}/0(id=${categ.id})}" th:text="${categ.name}">categ name</a>
+                </div>
+            </div> 
+
+            <div class="dropdown">
+                <button onclick="myFunction('genericDropdown')" class="dropbtn">Muut lajitteluperusteet</button>
+                <div id="genericDropdown" class="dropdown-content">
+                    <a href="/news/category/0/0">Uutuusjärjestys</a>
+                    <a href="/news/views/week/0">Viime Viikon luetuimmat</a>
+                </div>
+            </div> 
+            <div class="dropdown">
+                <button onclick="myFunction('god')" class="dropbtn">Hallintapaneeli</button>
+                <div id="god" class="dropdown-content">
+                    <a href="/add">Julkaise uusi artikkeli</a>
+                    <a href="/mode">Hallitse asetuksia</a>
+                </div>
+
+            </div>
+
+            <div class="dropdown"> 
+                <button onclick="myFunction('newest')" class="dropbtn">kaikkien aikojen 5 katsotuinta</button>
+                <div id="newest" class="dropdown-content">
+                    <ol>
+                        <li th:each="neew:${top5}">
+                            <a th:href="@{/news/{id}(id=${neew.id})}" th:text="${neew.label}">Lue lisää!</a>  
+                        </li>                       
+                    </ol>
+                </div>
+            </div> 
+            <div class="dropdown"> 
+                <button onclick="myFunction('tops')" class="dropbtn">5 uusinta</button>
+                <div id="tops" class="dropdown-content">
+                    <ol>
+                        <li th:each="neew:${newest}">
+                            <a th:href="@{/news/{id}(id=${neew.id})}" th:text="${neew.label}">Lue lisää!</a>  
+                        </li>                       
+                    </ol>
+                </div>
+            </div>       
+        </div>
+        <div th:if="${news}">
+            <form method="POST" th:action="@{/modeNews/{id}(id=${news.id})}" enctype="multipart/form-data">   
+                Otsikko:<input type="text" name="label" id="label" th:value="${news.label}" /><br/>
+                Ingressi:<input type="text" name="lead" id="ingressi" th:value="${news.ingressi}"/><br/>
+                Uutisen tekst <br/>
+                <textarea cols=50 rows=10 name="text" id="text" th:text="${news.text}"></textarea> <br/>
+                Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>
+                <input type="submit" value="Päivitä!"/>
+            </form>
+            Nykyinen kuva:
+            <img th:src="@{/images/{id}(id=${news.id})}"/>
+        </div>
+        <div th:unless="${news}">
+            <form method="POST" th:action="@{/makeNews}" enctype="multipart/form-data">
+                Otsikko:<input type="text" name="label" id="label" /><br/>
+                Ingressi:<input type="text" name="lead" id="ingressi"/><br/>
+                Uutisen tekst <br/>
+                <textarea cols=50 rows=10 name="text" id="text"></textarea> <br/>
+                Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>
+                <input type="submit" value="Julkaise!"/>
+            </form>
+        </div>
+
+
+        <script>
+            /* When the user clicks on the button, 
+             toggle between hiding and showing the dropdown content */
+            function myFunction(id) {
+                document.getElementById(id).classList.toggle("show");
+            }
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function (event) {
+                if (!event.target.matches('.dropbtn')) {
+
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    var i;
+                    for (i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            };
+        </script>
     </body>
+
+
+
+    <style>
+        /* Dropdown Button */
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Dropdown button on hover & focus */
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: #3e8e41;
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #f1f1f1}
+
+        /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+        .show {display:block;} 
+    </style>
 </html>

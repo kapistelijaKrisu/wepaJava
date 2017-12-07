@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Le News!</title>
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>News manager</title>
     </head>
-
     <body>
-        <h1>Uutiset</h1>
-        <a href="/init">Alusta testinäytteet</a><br/>
-        <a href="/add">Lisää uutinen!</a><br/>
-        <br/>
         <div>
             <div class="dropdown">
                 <a class="dropbtn" href="/">Etusivu</a>       
@@ -57,24 +53,14 @@
                 </div>
             </div>       
         </div>
-        <div>
-            <ul>
-                <li th:each="neew:${news}">
-                    <span th:text="${neew.label}">uutisen otsikko</span><br/>
-                    <a th:href="@{/news/{id}(id=${neew.id})}" >Lue lisää!</a><br/>
-                    <span th:text="${neew.published}">uutisen julkaisupvm</span><br/>
-
-                </li>
-
-            </ul>
-        </div>
-
-        <div class="pages" th:each="page:${pages}">
-            <a th:href="${page}" th:text="${page} "></a><br/>
-            <span> </span>
-
-        </div>
-
+        <form method="POST" th:action="@{/news}" enctype="multipart/form-data">
+            Otsikko:<input type="text" name="otsikko" id="otsikko" /><br/>
+            Ingressi:<input type="text" name="ingressi" id="ingressi"/><br/>
+            Uutisen tekst <br/>
+            <textarea cols=50 rows=10 name="text" id="text"></textarea> <br/>
+            Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>
+            <input type="submit" value="Julkaise!"/>
+        </form>
         <script>
             /* When the user clicks on the button, 
              toggle between hiding and showing the dropdown content */
@@ -146,6 +132,5 @@
 
         /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
         .show {display:block;} 
-        .pages{display:inline-block}
     </style>
 </html>

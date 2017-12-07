@@ -8,13 +8,14 @@
 
         <h1>Uutiset</h1>
         <a href="/init">Alusta testinäytteet</a><br/>
-        <a href="/add">Lisää uutinen!</a><br/>
+        <a href="https://docs.google.com/document/d/1Tqo_8ZnSKx_AHJjZgQAKkZQvKPTt71Q7_LaV1PK3Tu4/edit">tehtävänanto</a>
+
         <br/>
 
-        <ul>
-            <li><a href="https://docs.google.com/document/d/1Tqo_8ZnSKx_AHJjZgQAKkZQvKPTt71Q7_LaV1PK3Tu4/edit">tehtävänanto</a></li>
-        </ul>
         <div>
+            <div class="dropdown">
+                <a class="dropbtn" href="/">Etusivu</a>       
+            </div>
             <div class="dropdown">
                 <button onclick="myFunction('categoryDropdown')" class="dropbtn">Kategoriat</button>
                 <div id="categoryDropdown" class="dropdown-content">
@@ -25,16 +26,46 @@
             <div class="dropdown">
                 <button onclick="myFunction('genericDropdown')" class="dropbtn">Muut lajitteluperusteet</button>
                 <div id="genericDropdown" class="dropdown-content">
-                    <a href="/news/category/0/0">Uusimmat</a>
-                    <a href="/news/views/week/0">Viime Viikon suosituimmat</a>
+                    <a href="/news/category/0/0">Uutuusjärjestys</a>
+                    <a href="/news/views/week/0">Viime Viikon luetuimmat</a>
                 </div>
             </div> 
+            <div class="dropdown">
+                <button onclick="myFunction('god')" class="dropbtn">Hallintapaneeli</button>
+                <div id="god" class="dropdown-content">
+                    <a href="/add">Julkaise uusi artikkeli</a>
+                    <a href="/mode">Hallitse asetuksia</a>
+                </div>
+
+            </div>
+
+            <div class="dropdown"> 
+                <button onclick="myFunction('newest')" class="dropbtn">kaikkien aikojen 5 katsotuinta</button>
+                <div id="newest" class="dropdown-content">
+                    <ol>
+                        <li th:each="neew:${top5}">
+                            <a th:href="@{/news/{id}(id=${neew.id})}" th:text="${neew.label}">Lue lisää!</a>  
+          
+                        </li>                       
+                    </ol>
+                </div>
+            </div> 
+            <div class="dropdown"> 
+                <button onclick="myFunction('tops')" class="dropbtn">5 uusinta</button>
+                <div id="tops" class="dropdown-content">
+                    <ol>
+                        <li th:each="neew:${newest}">
+                            <a th:href="@{/news/{id}(id=${neew.id})}" th:text="${neew.label}">Lue lisää!</a>  
+                        </li>                       
+                    </ol>
+                </div>
+            </div>       
         </div>
 
         <div>
             <ul>
                 <li th:each="neew:${news}">
-                    <h4 th:text="${neew.label}">uutisen otsikko</h4><br/>
+                    <h4 th:text="${neew.label}">uutisen otsikko</h4>
                     Ingressi: <span th:text="${neew.ingressi}"/><br/>                
                     <img th:src="@{/images/{id}(id=${neew.id})}"/><br/>
 
@@ -52,14 +83,8 @@
 
             </ul>
         </div>
-        <div class="footer">
-            <div class="dropdown"> 
-                    <button onclick="myFunction('test')" class="dropbtn">Kategoriat</button>
-                    <div id="test" class="dropdown-content">
-                        <a th:each="categ:${categories}" th:href="@{/news/category/{id}/0(id=${categ.id})}" th:text="${categ.name}">categ name</a>
-                    </div>
-            </div> 
-        </div>
+
+
         <script>
             /* When the user clicks on the button, 
              toggle between hiding and showing the dropdown content */
@@ -87,16 +112,7 @@
 
 
     <style>
-        .footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background-color: green;
-            color: white;
-            text-align: center;
-        }
-
+        /* Dropdown Button */
         .dropbtn {
             background-color: #4CAF50;
             color: white;
@@ -106,26 +122,28 @@
             cursor: pointer;
         }
 
+        /* Dropdown button on hover & focus */
         .dropbtn:hover, .dropbtn:focus {
             background-color: #3e8e41;
         }
 
+        /* The container <div> - needed to position the dropdown content */
         .dropdown {
             position: relative;
             display: inline-block;
         }
 
+        /* Dropdown Content (Hidden by Default) */
         .dropdown-content {
             display: none;
             position: absolute;
             background-color: #f9f9f9;
             min-width: 160px;
-            overflow: auto;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
-            bottom: 100%;
         }
 
+        /* Links inside the dropdown */
         .dropdown-content a {
             color: black;
             padding: 12px 16px;
@@ -133,8 +151,10 @@
             display: block;
         }
 
-        .dropdown a:hover {background-color: #f1f1f1}
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #f1f1f1}
 
-        .show {display:block;}
+        /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+        .show {display:block;} 
     </style>
 </html>

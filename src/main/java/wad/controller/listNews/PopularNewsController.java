@@ -16,8 +16,9 @@ import wad.domain.View;
 import wad.repository.CategoryRepository;
 import wad.repository.NewsRepository;
 import wad.repository.ViewRepository;
-import wad.service.NewsSorter;
+import wad.service.ViewSorter;
 import wad.service.TimeService;
+import wad.service.ViewInfoGenerator;
 
 @Controller
 public class PopularNewsController {
@@ -32,17 +33,18 @@ public class PopularNewsController {
     @Autowired
     private TimeService timeCalculator;
     @Autowired
-    private NewsSorter viewSorter;
+    private ViewSorter viewSorter;
+    @Autowired
+    private ViewInfoGenerator viewInfo;
 
     @GetMapping("/news/views/week/{pageNro}")
     public String listByViews(Model model, @PathVariable int pageNro) {
-        List<News> news = getLastWeekViewedNews(pageNro);
-        model.addAttribute("news", news);
+        model.addAttribute("news", getLastWeekViewedNews(pageNro));        
         model.addAttribute("pages", getPageCount(PAGESIZE, pageNro));
-
-        Pageable sort = PageRequest.of(0, Integer.MAX_VALUE, Sort.Direction.ASC, "name");
-        model.addAttribute("categories", catRepo.findAll(sort));
-
+        
+        model.addAttribute("newest", viewInfo.getNewestNews());
+        model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
+        model.addAttribute("top5", viewInfo.getMostPopularNews());
         return "sorted";
     }
 
@@ -57,8 +59,7 @@ public class PopularNewsController {
         } else {
             viewList = viewRepo.findByYearAndWeek(year - 1, timeCalculator.getLastWeekNumber(), pageable);
         }
-
-        return viewSorter.sortNewsByViews(viewList);
+        return viewSorter.sortNewsByWeekViews(viewList);
     }
 
     private List<Integer> getPageCount(long pageSize, int pageNro) {
@@ -66,18 +67,12 @@ public class PopularNewsController {
         int week = timeCalculator.getCurrentWeekNumber();
         Pageable sort = PageRequest.of(0, Integer.MAX_VALUE);
 
-        double pageCount = 0;
+        int size = 0;
         if (week != 1) {
-            pageCount = viewRepo.findByYearAndWeek(year, timeCalculator.getLastWeekNumber(), sort).size();
+            size = viewRepo.findByYearAndWeek(year, timeCalculator.getLastWeekNumber(), sort).size();
         } else {
-            pageCount = viewRepo.findByYearAndWeek(year - 1, timeCalculator.getLastWeekNumber(), sort).size();
+            size = viewRepo.findByYearAndWeek(year - 1, timeCalculator.getLastWeekNumber(), sort).size();
         }
-        pageCount /= pageSize;
-
-        List<Integer> pages = new ArrayList<>();
-        for (int i = Math.max(pageNro - 10, 0); i < Math.min(pageNro + 10, pageCount); i++) {
-            pages.add(i);
-        }
-        return pages;
+        return viewInfo.listifyPageCount(size, pageNro);
     }
 }
