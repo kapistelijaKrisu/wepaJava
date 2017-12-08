@@ -56,7 +56,7 @@
         <div th:if="${news}">
             <form method="POST" th:action="@{/modeNews/{id}(id=${news.id})}" enctype="multipart/form-data">   
                 Otsikko:<input type="text" name="label" id="label" th:value="${news.label}" /><br/>
-                Ingressi:<input type="text" name="lead" id="ingressi" th:value="${news.ingressi}"/><br/>
+                Ingressi:<input type="text" name="lead" id="lead" th:value="${news.ingressi}"/><br/>
                 Uutisen tekst <br/>
                 <textarea cols=50 rows=10 name="text" id="text" th:text="${news.text}"></textarea> <br/>
                 Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>
@@ -66,9 +66,9 @@
             <img th:src="@{/images/{id}(id=${news.id})}"/>
         </div>
         <div th:unless="${news}">
-            <form method="POST" th:action="@{/news}" enctype="multipart/form-data">
-                Otsikko:<input type="text" name="otsikko" id="otsikko" /><br/>
-                Ingressi:<input type="text" name="ingressi" id="ingressi"/><br/>
+            <form method="POST" th:action="@{/makeNews}" enctype="multipart/form-data">
+                Otsikko:<input type="text" name="label" id="label" /><br/>
+                Ingressi:<input type="text" name="lead" id="lead"/><br/>
                 Uutisen tekst <br/>
                 <textarea cols=50 rows=10 name="text" id="text"></textarea> <br/>
                 Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>

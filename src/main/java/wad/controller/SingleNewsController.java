@@ -14,6 +14,7 @@ import wad.domain.*;
 import wad.repository.*;
 import wad.service.ViewInfoGenerator;
 import wad.service.ViewUpdater;
+
 @Transactional
 @Controller
 public class SingleNewsController {
@@ -63,31 +64,22 @@ public class SingleNewsController {
         return "add";
     }
 //lisää
-    @PostMapping("/news")
+
+    @PostMapping("/makeNews")
     public String save(@RequestParam("file") MultipartFile file,
-            @RequestParam("otsikko") String otsikko,
-            @RequestParam("ingressi") String ingressi,
-            @RequestParam("text") String teksti
-    ) throws IOException {
+            @RequestParam("label") String otsikko,
+            @RequestParam("lead") String ingressi,
+            @RequestParam("text") String teksti) throws IOException {
+
+        News news = new News(otsikko, ingressi, teksti, null);
         if (file != null) {
-
-            String[] fileFrags = file.getOriginalFilename().split("\\.");
-            String extension = fileFrags[fileFrags.length - 1];
-            // if (!extension.equals("gif") || !file.getContentType().equals("image/gif")) {
-            //    return "redirect:/";
-            //  }
-
-            FileObject fo = new FileObject(null, file.getName(), file.getContentType(), file.getSize(), file.getBytes());
+            FileObject fo = createFileObject(file);
             fileRepo.save(fo);
-            News news = new News(otsikko, ingressi, teksti, fo);
-            newsRepo.save(news);
-        } else {
-            News news = new News(otsikko, ingressi, teksti, null);
-            newsRepo.save(news);
+            news.setKuva(fo);
         }
-
-        return "redirect:/";
-}
+        newsRepo.save(news);
+        return "redirect:/modeNews/" + news.getId();
+    }
 
     //single in edit
     @PostMapping("/modeNews/{id}")
@@ -97,28 +89,29 @@ public class SingleNewsController {
             @RequestParam("text") String text,
             @PathVariable("id") long id
     ) throws IOException {
+        News news = newsRepo.getOne(id);
+        news.setIngressi(lead);
+        news.setLabel(label);
+        news.setText(text);
+
         if (file != null) {
 
-            String[] fileFrags = file.getOriginalFilename().split("\\.");
-            String extension = fileFrags[fileFrags.length - 1];
-            // if (!extension.equals("gif") || !file.getContentType().equals("image/gif")) {
-            //    return "redirect:/";
-            //  }
-
-            FileObject fo = new FileObject(null, file.getName(), file.getContentType(), file.getSize(), file.getBytes());
+            FileObject fo = createFileObject(file);
             fileRepo.save(fo);
-            News news = newsRepo.getOne(id);
-            news.setIngressi(lead);
-            news.setLabel(label);
-            news.setText(text);
+
             news.setKuva(fo);
             newsRepo.save(news);
-        } else {
-            News news = new News(label, lead, text, null);
-            newsRepo.save(news);
         }
-
-        return "redirect:/";
+        newsRepo.save(news);
+        return "redirect:/modeNews/" + news.getId();
     }
 
+    private FileObject createFileObject(MultipartFile file) throws IOException {
+        String[] fileFrags = file.getOriginalFilename().split("\\.");
+        String extension = fileFrags[fileFrags.length - 1];
+        // if (!extension.equals("gif") || !file.getContentType().equals("image/gif")) {
+        //    return "redirect:/";
+        //  }
+        return new FileObject(null, file.getName(), file.getContentType(), file.getSize(), file.getBytes());
+    }
 }
