@@ -3,8 +3,10 @@ package wad.domain;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,21 +20,25 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Category extends AbstractPersistable<Long> implements Comparable<Category> {
 
     private String name;
-    @ManyToMany(mappedBy="categories",fetch = FetchType.EAGER)
+   
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "news_category",
+            joinColumns = @JoinColumn(name = "Category_id"),
+            inverseJoinColumns = @JoinColumn(name = "News_id"))
     private Set<News> news;
 
     public Category(String name) {
         this.name = name;
     }
 
-    public void addTip(News news) {
+    public void addNews(News news) {
         if (this.news == null) {
             this.news = new TreeSet<>();
         }
         this.news.add(news);
     }
     
-    public void removeTip(News news) {
+    public void removeNews(News news) {
         this.news.remove(news);
     }
     

@@ -1,6 +1,7 @@
 package wad.domain;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.persistence.CascadeType;
@@ -20,7 +21,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 @Data
 @Entity
-public class News extends AbstractPersistable<Long> implements Comparable<News>{
+public class News extends AbstractPersistable<Long> implements Comparable<News> {
 
     private String label;
     private String ingressi;
@@ -34,23 +35,17 @@ public class News extends AbstractPersistable<Long> implements Comparable<News>{
     private Set<View> views;
 
     //writer
-    @ManyToMany(cascade = {
-        CascadeType.PERSIST,
-        CascadeType.MERGE
-    }, fetch = FetchType.EAGER)
-    @JoinTable(name = "leWriter",
-            joinColumns = @JoinColumn(name = "news_id"),
-            inverseJoinColumns = @JoinColumn(name = "writer_id"))
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "news_writer",
+            joinColumns = @JoinColumn(name = "News_id"),
+            inverseJoinColumns = @JoinColumn(name = "Writer_id"))
     private Set<Writer> writers;
 
-    //writer
-    @ManyToMany(cascade = {
-        CascadeType.PERSIST,
-        CascadeType.MERGE
-    }, fetch = FetchType.EAGER)
-    @JoinTable(name = "leCats",
-            joinColumns = @JoinColumn(name = "news_id"),
-            inverseJoinColumns = @JoinColumn(name = "cats_id"))
+    //categories
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "news_category",
+            joinColumns = @JoinColumn(name = "News_id"),
+            inverseJoinColumns = @JoinColumn(name = "Category_id"))
     private Set<Category> categories;
 
     public News(String label, String ingress, String text, FileObject kuva) {
@@ -65,7 +60,7 @@ public class News extends AbstractPersistable<Long> implements Comparable<News>{
         views = new TreeSet<>();
 
     }
-    
+
     public long getTotalViewCount() {
         long count = 0;
         for (View view : views) {
@@ -89,8 +84,17 @@ public class News extends AbstractPersistable<Long> implements Comparable<News>{
         categories.add(c);
 
     }
+
     @Override
     public int compareTo(News o) {
         return this.published.compareTo(o.getPublished());
+    }
+
+    public void deleteCategory(Category category) {
+        categories.remove(category);
+    }
+
+    public void deleteWriter(Writer writer) {
+        writers.remove(writer);
     }
 }

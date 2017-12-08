@@ -4,8 +4,10 @@ package wad.domain;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,21 +23,25 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Writer extends AbstractPersistable<Long> implements Comparable<Writer>{
 
     private String name;
-    @ManyToMany(mappedBy="writers",fetch = FetchType.EAGER)
+    @ManyToMany(cascade ={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name="news_writer",
+            joinColumns=@JoinColumn(name="Writer_id"),
+            inverseJoinColumns=@JoinColumn(name="News_id")
+        )
     private Set<News> news;
 
     public Writer(String name) {
         this.name = name;
     }
 
-    public void addTip(News news) {
+    public void addNews(News news) {
         if (this.news == null) {
             this.news = new TreeSet<>();
         }
         this.news.add(news);
     }
     
-    public void removeTip(News news) {
+    public void removeNews(News news) {
         this.news.remove(news);
     }
     

@@ -1,6 +1,8 @@
-package wad.controller;
+package wad.controller.single;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ public class SingleNewsController {
     @Autowired
     private CategoryRepository catRepo;
     @Autowired
+    private WriterRepository writerRepo;
+    @Autowired
     private FileObjectRepository fileRepo;
     @Autowired
     private ViewRepository viewRepo;
@@ -49,6 +53,10 @@ public class SingleNewsController {
     //new single
     @GetMapping("/add")
     public String addform(Model model) {
+        model.addAttribute("writers", writerRepo.findAll());
+
+        model.addAttribute("newest", viewInfo.getNewestNews());
+        model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
         model.addAttribute("top5", viewInfo.getMostPopularNews());
         return "add";
     }
@@ -56,7 +64,10 @@ public class SingleNewsController {
     //single in edit
     @GetMapping("/modeNews/{id}")
     public String addform(Model model, @PathVariable long id) {
-        model.addAttribute("news", newsRepo.getOne(id));
+        News n = newsRepo.getOne(id);
+        model.addAttribute("news", n);
+        model.addAttribute("missingWriters", getNotHavingWriters(n));
+        model.addAttribute("missingCategories", getNotHavingCategories(n));
 
         model.addAttribute("newest", viewInfo.getNewestNews());
         model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
@@ -69,9 +80,13 @@ public class SingleNewsController {
     public String save(@RequestParam("file") MultipartFile file,
             @RequestParam("label") String otsikko,
             @RequestParam("lead") String ingressi,
-            @RequestParam("text") String teksti) throws IOException {
+            @RequestParam("text") String teksti,
+            @RequestParam("categories") String[] categories,
+            @RequestParam("writers") String[] writers) throws IOException {
 
         News news = new News(otsikko, ingressi, teksti, null);
+        handleCategoryInput(news, categories);
+        handleWritersInput(news, writers);
         if (file != null) {
             FileObject fo = createFileObject(file);
             fileRepo.save(fo);
@@ -89,6 +104,7 @@ public class SingleNewsController {
             @RequestParam("text") String text,
             @PathVariable("id") long id
     ) throws IOException {
+
         News news = newsRepo.getOne(id);
         news.setIngressi(lead);
         news.setLabel(label);
@@ -98,12 +114,36 @@ public class SingleNewsController {
 
             FileObject fo = createFileObject(file);
             fileRepo.save(fo);
-
             news.setKuva(fo);
-            newsRepo.save(news);
         }
         newsRepo.save(news);
         return "redirect:/modeNews/" + news.getId();
+    }
+
+    private List<Category> getNotHavingCategories(News n) {
+        List<Category> cats = catRepo.findAll();
+        cats.removeAll(n.getCategories());
+        return cats;
+    }
+
+    private List<Writer> getNotHavingWriters(News n) {
+        List<Writer> writers = writerRepo.findAll();
+        writers.removeAll(n.getWriters());
+        return writers;
+    }
+
+    private void handleCategoryInput(News news, String[] categories) {
+        for (String categoryId : categories) {
+            Category cat = catRepo.getOne(Long.parseLong(categoryId));
+            news.addCategory(cat);
+        }
+    }
+
+    private void handleWritersInput(News news, String[] writers) {
+        for (String writerId : writers) {
+            Writer writer = writerRepo.getOne(Long.parseLong(writerId));
+            news.addWriter(writer);
+        }
     }
 
     private FileObject createFileObject(MultipartFile file) throws IOException {

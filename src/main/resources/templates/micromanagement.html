@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head lang="en">
-        <meta charset="UTF-8" />
-        <title>News manager</title>
+    <head>
+        <title>Le News!</title>
     </head>
+
     <body>
+
+        <h1>Uutiset</h1>
+        <a href="/init">Alusta testinäytteet</a><br/>
+        <a href="https://docs.google.com/document/d/1Tqo_8ZnSKx_AHJjZgQAKkZQvKPTt71Q7_LaV1PK3Tu4/edit">tehtävänanto</a>
+
+        <br/>
+        
         <div>
             <div class="dropdown">
                 <a class="dropbtn" href="/">Etusivu</a>       
@@ -31,13 +38,14 @@
                 </div>
 
             </div>
-
+            <br/><br/>
             <div class="dropdown"> 
                 <button onclick="myFunction('newest')" class="dropbtn">kaikkien aikojen 5 katsotuinta</button>
                 <div id="newest" class="dropdown-content">
                     <ol>
                         <li th:each="neew:${top5}">
                             <a th:href="@{/news/{id}(id=${neew.id})}" th:text="${neew.label}">Lue lisää!</a>  
+
                         </li>                       
                     </ol>
                 </div>
@@ -53,14 +61,38 @@
                 </div>
             </div>       
         </div>
-        <form method="POST" th:action="@{/news}" enctype="multipart/form-data">
-            Otsikko:<input type="text" name="otsikko" id="otsikko" /><br/>
-            Ingressi:<input type="text" name="ingressi" id="ingressi"/><br/>
-            Uutisen tekst <br/>
-            <textarea cols=50 rows=10 name="text" id="text"></textarea> <br/>
-            Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>
-            <input type="submit" value="Julkaise!"/>
-        </form>
+
+        <div>
+
+            <form method="POST" action="/category">  
+                Lisää uusi kategoria:
+                <input type="text" name="category" placeholder="Kategorian nimi"></input>   
+                <input type="submit" value="Lisää kategoria"/> 
+            </form>
+ 
+            <form method="POST" action="/writer">
+                Rekisteröi Kirjoittaja:
+                <input type="text" name="writer" placeholder="Kirjoittajan nimi"></input>   
+                <input type="submit" value="Lisää kategoria"/>  
+            </form>
+            <br/>
+            <form th:method="DELETE" action="/category">  
+                Poista Kategoriat:
+                <select multiple="multiple" name="categories">
+                    <option th:each="categ:${categories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
+                </select> 
+                <input type="submit" value="/postacat!"/> 
+            </form>
+            <form th:method="DELETE" action="writer">  
+                Poista Kirjoittajat:
+                <select multiple="multiple" name="writers">
+                    <option th:each="w:${writers}" th:value="${w.id}" th:text="${w.name}">categ name</option>              
+                </select> 
+                <input type="submit" value="postawri!"/> 
+            </form>
+        </div>
+
+
         <script>
             /* When the user clicks on the button, 
              toggle between hiding and showing the dropdown content */
