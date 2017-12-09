@@ -31,7 +31,7 @@ public class News extends AbstractPersistable<Long> implements Comparable<News> 
     private FileObject kuva;
 
     //views
-    @OneToMany(mappedBy = "news")
+    @OneToMany(mappedBy = "news", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<View> views;
 
     //writer

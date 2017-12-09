@@ -51,7 +51,8 @@
                         </li>                       
                     </ol>
                 </div>
-            </div>       
+            </div>
+            
         </div>
         <div th:if="${news}">
             <form method="POST" th:action="@{/modeNews/{id}(id=${news.id})}" enctype="multipart/form-data">   
@@ -63,30 +64,30 @@
                 <input type="submit" value="Päivitä!"/>              
             </form>
             <form method="POST" th:action="@{/modeNews/addCategories/{id}(id=${news.id})}">  
-            Lisää Kategoria:
+                Lisää Kategoria:
                 <select multiple="multiple" name="categories">
-                      <option th:each="categ:${missingCategories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
+                    <option th:each="categ:${missingCategories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
                 </select> 
-            <input type="submit" value="lisääcat!"/> 
+                <input type="submit" value="lisääcat!"/> 
             </form>
             <form method="POST" th:action="@{/modeNews/addWriters/{id}(id=${news.id})}">  
                 Lisää Kirjoittajat:
                 <select multiple="multiple" name="writers">
-                      <option th:each="w:${missingWriters}" th:value="${w.id}" th:text="${w.name}">categ name</option>              
+                    <option th:each="w:${missingWriters}" th:value="${w.id}" th:text="${w.name}">categ name</option>              
                 </select> 
                 <input type="submit" value="lisaawri!"/> 
-                </form>
+            </form>
             <form method="POST" th:action="@{/modeNews/deleteCategories/{id}(id=${news.id})}">  
                 poista Kategoriat:
                 <select multiple="multiple" name="delCategories">
-                      <option th:each="categ:${news.categories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
+                    <option th:each="categ:${news.categories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
                 </select> 
                 <input type="submit" value="postacat!"/> 
-                </form>
+            </form>
             <form method="POST" th:action="@{/modeNews/deleteWriters/{id}(id=${news.id})}">  
-               Poista Kirjoittajat:
+                Poista Kirjoittajat:
                 <select multiple="multiple" name="delWriters">
-                      <option th:each="w:${news.writers}" th:value="${w.id}" th:text="${w.name}">categ name</option>              
+                    <option th:each="w:${news.writers}" th:value="${w.id}" th:text="${w.name}">categ name</option>              
                 </select> 
                 <input type="submit" value="postawri!"/> 
             </form>
@@ -101,14 +102,14 @@
                 <textarea cols=50 rows=10 name="text" id="text"></textarea> <br/>
                 Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>
                 <input type="submit" value="Julkaise!"/>
-                
+
                 Valitse Kategoriat:
                 <select multiple="multiple" name="categories">
-                      <option th:each="categ:${categories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
+                    <option th:each="categ:${categories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
                 </select> 
                 Valitse Kirjoittajat:
                 <select multiple="multiple" name="writers">
-                      <option th:each="w:${writers}" th:value="${w.id}" th:text="${w.name}">categ name</option>              
+                    <option th:each="w:${writers}" th:value="${w.id}" th:text="${w.name}">categ name</option>              
                 </select> 
             </form>
         </div>

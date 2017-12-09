@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +25,7 @@ public class ModeNewsCategoryController {
     private CategoryRepository catRepo;
 
    //single in edit
-    @PostMapping("/modeNews/deleteCategories/{id}")
+    @DeleteMapping("/modeNews/deleteCategories/{id}")
     public String deleteCategories(
             @PathVariable("id") long id,
             @RequestParam("delCategories") String[] delCategories) {

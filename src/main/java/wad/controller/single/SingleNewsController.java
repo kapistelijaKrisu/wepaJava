@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,7 +53,7 @@ public class SingleNewsController {
 
     //new single
     @GetMapping("/add")
-    public String addform(Model model) {
+    public String addformEmpty(Model model) {
         model.addAttribute("writers", writerRepo.findAll());
 
         model.addAttribute("newest", viewInfo.getNewestNews());
@@ -94,6 +95,13 @@ public class SingleNewsController {
         }
         newsRepo.save(news);
         return "redirect:/modeNews/" + news.getId();
+    }
+    
+    @DeleteMapping("/news/{id}")
+    public String deleteNews(@PathVariable("id") long id) {       
+        News news = newsRepo.getOne(id);             
+        newsRepo.delete(news);
+        return "redirect:/";
     }
 
     //single in edit

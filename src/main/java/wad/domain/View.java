@@ -2,6 +2,7 @@
 package wad.domain;
 
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -10,6 +11,7 @@ import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @AllArgsConstructor
@@ -22,7 +24,7 @@ public class View extends AbstractPersistable<Long> implements Comparable<View>{
     private int week;  
     private long views;
     @ManyToOne
-    @JoinColumn(name="ID_NEWS")
+    @JoinColumn
     private News news;
     
  

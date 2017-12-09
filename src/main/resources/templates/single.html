@@ -56,9 +56,17 @@
             <div class="dropdown">
                 <a class="dropbtn" th:href="@{/modeNews/{id}(id=${news.id})}">muokkaa</a>       
             </div>
+            <div class="dropdown">
+                <form class="dropbtn" th:method="DELETE" th:action="@{/news/{id}(id=${news.id})}"> 
+                    
+                    
+                    <input type="submit" value="Poista uutinen!"/> 
+                </form>
+            </div>
+
         </div>
         <div>
-            
+
             <img th:src="@{/images/{id}(id=${news.id})}" alt="Kuva ei näy!"/><br/>
             <p th:text="${news.ingressi}"/>
             <p th:text="${news.text}"/>  
