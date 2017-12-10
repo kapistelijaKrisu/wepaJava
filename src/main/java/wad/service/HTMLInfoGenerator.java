@@ -12,16 +12,13 @@ import wad.domain.Category;
 import wad.domain.News;
 import wad.repository.CategoryRepository;
 import wad.repository.NewsRepository;
-import wad.repository.ViewRepository;
 
-@Service
+@Service//navigaatiopalkin infot ja sivutus
 public class HTMLInfoGenerator {
 
     private static final int PAGESIZE = 5;
     @Autowired
     private NewsRepository newsRepo;
-    @Autowired
-    private ViewRepository viewRepo;
     @Autowired
     private CategoryRepository catRepo;
     @Autowired

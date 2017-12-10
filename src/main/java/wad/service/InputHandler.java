@@ -13,7 +13,7 @@ import wad.domain.Writer;
 import wad.repository.CategoryRepository;
 import wad.repository.WriterRepository;
 
-@Service
+@Service //prosessoi syötteen ja oliosoi sen
 public class InputHandler {
     
     @Autowired

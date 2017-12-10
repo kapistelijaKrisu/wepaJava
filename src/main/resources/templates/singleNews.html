@@ -3,9 +3,8 @@
     <head>
         <title >Le news!</title>
     </head>
-
     <body>
-        
+        <br/>
         <div>
             <div class="dropdown">
                 <a class="dropbtn" href="/">Etusivu</a>       
@@ -56,7 +55,7 @@
             <br/><br/>
             <div class="dropdown">
                 <form class="dropbtn" th:method="GET" th:action="@{/modeNews/{id}(id=${news.id})}">  
-                <input type="submit" value="Muokkaa!"/> 
+                    <input type="submit" value="Muokkaa!"/> 
                 </form>
             </div>
             <div class="dropdown">
@@ -67,12 +66,12 @@
 
         </div>
         <br/>
-        
+
         <div>
             <h1 th:text="${news.label}"></h1>
             <h4 th:text="${news.ingressi}"/>
             <img th:src="@{/images/{id}(id=${news.id})}" style="width:300px" alt="Kuva ei näy!"/><br/>
-            
+
             <p th:text="${news.text}"/>  
         </div>
         <br/><br/><br/>

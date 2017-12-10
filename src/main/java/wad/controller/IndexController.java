@@ -14,7 +14,7 @@ import wad.repository.NewsRepository;
 import wad.service.HTMLInfoGenerator;
 
 @Transactional
-@Controller
+@Controller//etusivu
 public class IndexController {
 
     @Autowired

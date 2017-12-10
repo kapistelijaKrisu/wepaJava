@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity
+@Entity//lukukerta viikon mukaan
 public class View extends AbstractPersistable<Long> implements Comparable<View> {
 
     private int year;

@@ -21,7 +21,7 @@ import wad.service.validators.WriterValidator;
 import wad.service.verifiers.CategoryVerifier;
 import wad.service.verifiers.WriterVerifier;
 
-@Controller
+@Controller//kirjailija ja kategorian hallinta
 public class MicromanagementController {
 
     @Autowired

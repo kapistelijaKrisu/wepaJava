@@ -33,7 +33,7 @@ public class PopularNewsController {
     @GetMapping("/news/views/week/{pageNro}")
     public String listByViews(Model model, @PathVariable int pageNro) {
         model.addAttribute("news", getLastWeekViewedNews(pageNro));
-        model.addAttribute("pages", getPageCount(PAGESIZE, pageNro));
+        model.addAttribute("pages", getPageCount(pageNro));
 
         model.addAttribute("newest", viewInfo.getNewestNews());
         model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
@@ -55,7 +55,7 @@ public class PopularNewsController {
         return viewSorter.sortNewsByWeekViews(viewList);
     }
 
-    private List<Integer> getPageCount(long pageSize, int pageNro) {
+    private List<Integer> getPageCount(int pageNro) {
         int year = timeCalculator.getCurrentYear();
         int week = timeCalculator.getCurrentWeekNumber();
         Pageable sort = PageRequest.of(0, Integer.MAX_VALUE);

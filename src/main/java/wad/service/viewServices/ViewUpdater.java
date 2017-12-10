@@ -8,7 +8,7 @@ import wad.repository.NewsRepository;
 import wad.repository.ViewRepository;
 import wad.service.TimeService;
 
-@Service
+@Service//päivittää katsoja lukukerrat
 public class ViewUpdater {
 
     @Autowired
@@ -18,6 +18,7 @@ public class ViewUpdater {
     @Autowired
     private NewsRepository newsRepo;
 
+    //laskee oikean viikko numeron ja lisää lukukerran
     public void addView(News news) {
         int week = timeCalculator.getCurrentWeekNumber();
         int year = timeCalculator.getCurrentYear();

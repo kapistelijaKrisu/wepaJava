@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 import org.springframework.stereotype.Service;
 
-@Service
+@Service//laskee viikkonumeron ja muita apumetodeja
 public class TimeService {
 
     public int getCurrentWeekNumber() {
