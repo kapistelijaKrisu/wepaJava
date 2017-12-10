@@ -1,4 +1,4 @@
-package wad.controller.news;
+package wad.controller.newsForm;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,66 +9,68 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import wad.domain.Category;
 import wad.domain.News;
-import wad.repository.CategoryRepository;
+import wad.domain.Writer;
 import wad.repository.NewsRepository;
+import wad.repository.WriterRepository;
 import wad.service.validators.NewsValidator;
 
 @Transactional
 @Controller
-public class ModeNewsCategoryController {
+public class ModeNewsWriterController {
 
     @Autowired
     private NewsRepository newsRepo;
     @Autowired
-    private CategoryRepository catRepo;
+    private WriterRepository writerRepo;
     @Autowired
     private NewsValidator newsValidator;
 
     //single in edit
-    @DeleteMapping("/modeNews/deleteCategories/{id}")
-    public String deleteCategories(
+    @DeleteMapping("/modeNews/deleteWriters/{id}")
+    public String deleteWriters(
             @PathVariable("id") long id,
-            @RequestParam("delCategories") String[] delCategories,
-            RedirectAttributes  attributes) {
+            @RequestParam("delWriters") String[] delWriters,
+            RedirectAttributes attributes) {
 
         News news = newsRepo.getOne(id);
-        handleDeleteCategoryInput(delCategories, news);
+        handleDeleteWriterInput(delWriters, news);
+        //verify
+        
         List<String> errors = newsValidator.validate(news);
         if (errors.isEmpty()) {
         newsRepo.save(news);
-        
-        attributes.addAttribute("success", "Uutiselta on onnistuneesti poistettu kategoriat!");
+        attributes.addAttribute("success", "Uutiselta on onnistuneesti poistettu kirjoittajat!");
         } else {
             attributes.addAttribute("errors", errors);
+            attributes.addAttribute("news", news);
         }
         return "redirect:/modeNews/" + news.getId();
     }
-
-    private void handleDeleteCategoryInput(String[] categories, News n) {
-        for (String cat : categories) {
-            Category c = catRepo.getOne(Long.parseLong(cat));
-            n.deleteCategory(c);
+    private void handleDeleteWriterInput(String[] writers, News n) {
+        for (String writer : writers) {
+            Writer w = writerRepo.getOne(Long.parseLong(writer));
+            n.deleteWriter(w);
         }
     }
 
-    @PostMapping("/modeNews/addCategories/{id}")
-    public String addCategories(
+    
+    @PostMapping("/modeNews/addWriters/{id}")
+    public String addWriters(
             @PathVariable("id") long id,
-            @RequestParam("categories") String[] delCategories) {
+            @RequestParam("writers") String[] delArtists) {
 
         News news = newsRepo.getOne(id);
-        handleCategoryInput(delCategories, news);
+        handleWriterInput(delArtists, news);
+      
         newsRepo.save(news);
         return "redirect:/modeNews/" + news.getId();
     }
-
-    private void handleCategoryInput(String[] categories, News news) {
-        for (String categoryId : categories) {
-            Category cat = catRepo.getOne(Long.parseLong(categoryId));
-            if (cat != null) {
-                news.addCategory(cat);
+    private void handleWriterInput(String[] writers, News news) {
+        for (String writerId : writers) {
+            Writer w = writerRepo.getOne(Long.parseLong(writerId));
+            if (w != null) {
+            news.addWriter(w);
             }
         }
     }

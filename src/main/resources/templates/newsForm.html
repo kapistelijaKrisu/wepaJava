@@ -72,6 +72,7 @@
         <div th:if="${success}">
             <p th:text="${success}">success msg</p>  
         </div>
+        <br/><br/>
         <div th:if="${news}">
             <form method="POST" th:action="@{/modeNews/{id}(id=${news.id})}" enctype="multipart/form-data">   
                 Otsikko:<input type="text" name="label" id="label" th:value="${news.label}" /><br/>

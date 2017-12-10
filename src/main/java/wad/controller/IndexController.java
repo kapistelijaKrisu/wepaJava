@@ -17,7 +17,7 @@ import wad.service.HTMLInfoGenerator;
 
 @Transactional
 @Controller
-public class MainPageController {
+public class IndexController {
     @Autowired
     private NewsRepository newsRepo;
     @Autowired

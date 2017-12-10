@@ -1,10 +1,8 @@
-package wad.controller.news;
+package wad.controller.newsForm;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,14 +16,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import wad.domain.*;
 import wad.repository.*;
+import wad.service.InputHandler;
 import wad.service.HTMLInfoGenerator;
 import wad.service.validators.FileObjectValidator;
 import wad.service.validators.NewsValidator;
-import wad.service.viewServices.ViewUpdater;
 
 @Transactional
 @Controller
-public class SingleNewsController {
+public class NewsFormController {
 
     @Autowired
     private HTMLInfoGenerator viewInfo;
@@ -42,22 +40,9 @@ public class SingleNewsController {
     @Autowired
     private NewsValidator newsValidator;
     @Autowired
-    ViewUpdater viewUpdater;
+    private InputHandler inputHandler;
 
-    @GetMapping("/news/{id}")
-    public String readSingle(Model model, @PathVariable long id) {
-        model.addAttribute("top5", viewInfo.getMostPopularNews());
-        News news = newsRepo.findById(id).get();
-        viewUpdater.addView(news);
-        model.addAttribute("news", news);
-
-        model.addAttribute("newest", viewInfo.getNewestNews());
-        model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
-        model.addAttribute("top5", viewInfo.getMostPopularNews());
-        return "singleNews";
-    }
-
-    //new form
+    //get new news form
     @GetMapping("/newsForm")
     public String addformEmpty(Model model) {
         model.addAttribute("writers", writerRepo.findAll());
@@ -68,7 +53,7 @@ public class SingleNewsController {
         return "newsForm";
     }
 
-    // edit form
+    //get edit form
     @GetMapping("/modeNews/{id}")
     public String addform(Model model, @PathVariable long id) {
         News n = newsRepo.getOne(id);
@@ -83,7 +68,7 @@ public class SingleNewsController {
         return "newsForm";
     }
 
-    //luonti
+    //uuden posti
     @PostMapping("/makeNews")
     public String save(@RequestParam("file") MultipartFile file,
             @RequestParam("label") String otsikko,
@@ -94,11 +79,11 @@ public class SingleNewsController {
             RedirectAttributes attributes) throws IOException {
 
         News news = new News(otsikko, ingressi, teksti, null);
-        handleCategoryInput(news, categories);
-        handleWritersInput(news, writers);
+        inputHandler.handleCategoryInput(news, categories);
+        inputHandler.handleWritersInput(news, writers);
 
         List<String> errors = new ArrayList<>();
-        FileObject fo = handleFileObjectOpening(file, errors);
+        FileObject fo = inputHandler.handleFileObjectOpening(file, errors);
         errors.addAll(fileValidator.validate(fo));
         news.setKuva(fo);
         errors.addAll(newsValidator.validate(news));
@@ -114,60 +99,6 @@ public class SingleNewsController {
             return "redirect:/newsForm";
         }
 
-    }
-
-    @PostMapping("/modeNews/{id}")
-    public String save(@RequestParam("label") String label,
-            @RequestParam("lead") String lead,
-            @RequestParam("text") String text,
-            @PathVariable("id") long id,
-            RedirectAttributes attributes) {
-
-        News news = newsRepo.getOne(id);
-        news.setIngressi(lead);
-        news.setLabel(label);
-        news.setText(text);
-
-        List<String> errors = new ArrayList<>();
-        errors.addAll(newsValidator.validate(news));
-
-        if (errors.isEmpty()) {
-            newsRepo.save(news);
-            attributes.addFlashAttribute("success", "Uutinen on onnistuneesti päivitetty!");
-        } else {
-            attributes.addFlashAttribute("errors", errors);
-        }
-        return "redirect:/modeNews/" + news.getId();
-    }
-
-    //kuvan muokkaus
-    @PostMapping("/modeNews/{id}/image")
-    public String updateImageOnNews(@RequestParam("file") MultipartFile file,
-            @PathVariable Long id,
-            RedirectAttributes attributes) {
-
-        List<String> errors = new ArrayList<>();
-        News news = newsRepo.getOne(id);
-
-        FileObject fo = handleFileObjectOpening(file, errors);
-        errors.addAll(fileValidator.validate(fo));
-        if (errors.isEmpty()) {
-            fileRepo.save(fo);
-            news.setKuva(fo);
-            attributes.addFlashAttribute("success", "Uutinen on onnistuneesti päivitetty!");
-        } else {
-            attributes.addAttribute("errors", errors);
-        }
-        return "redirect:/modeNews/" + news.getId();
-    }
-
-    private FileObject handleFileObjectOpening(MultipartFile file, List<String> errors) {
-        try {
-            return new FileObject(null, file.getName(), file.getContentType(), file.getSize(), file.getBytes());
-        } catch (IOException e) {
-            errors.add("Kuvan käsittelyssä tapahtui virhe. Ehkä polku on virheellinen?");
-        }
-        return null;
     }
 
     @DeleteMapping("/news/{id}")
@@ -189,17 +120,4 @@ public class SingleNewsController {
         return writers;
     }
 
-    private void handleCategoryInput(News news, String[] categories) {
-        for (String categoryId : categories) {
-            Category cat = catRepo.getOne(Long.parseLong(categoryId));
-            news.addCategory(cat);
-        }
-    }
-
-    private void handleWritersInput(News news, String[] writers) {
-        for (String writerId : writers) {
-            Writer writer = writerRepo.getOne(Long.parseLong(writerId));
-            news.addWriter(writer);
-        }
-    }
 }
