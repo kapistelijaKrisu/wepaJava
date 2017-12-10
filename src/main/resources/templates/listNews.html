@@ -57,7 +57,7 @@
             </div>       
         </div>
         <div>
-            <ul>
+            <ul id="list">
                 <li th:each="neew:${news}">
                     <a th:href="@{/news/{id}(id=${neew.id})}" th:text="${neew.label}">uutisen otsikko</a><br/>
                 

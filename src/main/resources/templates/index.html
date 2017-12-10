@@ -17,13 +17,13 @@
                 <a class="dropbtn" href="/">Etusivu</a>       
             </div>
             <div class="dropdown">
-                <button onclick="myFunction('categoryDropdown')" class="dropbtn">Kategoriat</button>
+                <button id="kategoria" onclick="myFunction('categoryDropdown')" class="dropbtn">Kategoriat</button>
                 <div id="categoryDropdown" class="dropdown-content">
                     <a th:each="categ:${categories}" th:href="@{/news/category/{id}/0(id=${categ.id})}" th:text="${categ.name}">categ name</a>
                 </div>
             </div> 
 
-            <div class="dropdown">
+            <div id="muuListaus" class="dropdown">
                 <button onclick="myFunction('genericDropdown')" class="dropbtn">Muut lajitteluperusteet</button>
                 <div id="genericDropdown" class="dropdown-content">
                     <a href="/news/category/0/0">Uutuusjärjestys</a>
@@ -79,7 +79,7 @@
             <p th:text="${success}">success msg</p>  
         </div>
         <div>
-            <ul>
+            <ul id="newscontent">
                 <li th:each="neew:${news}">
                     <h4 th:text="${neew.label}">uutisen otsikko</h4>
                     Ingressi: <span th:text="${neew.ingressi}"/><br/>                
