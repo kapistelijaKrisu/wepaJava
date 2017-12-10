@@ -72,7 +72,7 @@
             <h4 th:text="${news.ingressi}"/>
             <img th:src="@{/images/{id}(id=${news.id})}" style="width:300px" alt="Kuva ei näy!"/><br/>
 
-            <p th:text="${news.text}"/>  
+            <textarea th:text="${news.text}"></textarea>   
         </div>
         <br/><br/><br/>
         <div>

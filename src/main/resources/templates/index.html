@@ -76,7 +76,7 @@
             <ul id="newscontent">
                 <li th:each="neew:${news}">
                     <h4 th:text="${neew.label}">uutisen otsikko</h4>
-                    Ingressi: <span th:text="${neew.ingressi}"/><br/>                
+                    <span th:text="${neew.ingressi}"/><br/>                
                     <img th:src="@{/images/{id}(id=${neew.id})}" style="width:150px" alt="Kuvaa ei näy!"/><br/>
 
                     <a th:href="@{/news/{id}(id=${neew.id})}" >Lue lisää!</a><br/>      
