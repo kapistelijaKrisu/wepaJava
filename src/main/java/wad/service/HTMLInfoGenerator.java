@@ -16,7 +16,7 @@ import wad.repository.NewsRepository;
 import wad.repository.ViewRepository;
 
 @Service
-public class ViewInfoGenerator {
+public class HTMLInfoGenerator {
 
     private static final int PAGESIZE = 5;
     @Autowired

@@ -11,7 +11,7 @@
         <a href="https://docs.google.com/document/d/1Tqo_8ZnSKx_AHJjZgQAKkZQvKPTt71Q7_LaV1PK3Tu4/edit">tehtävänanto</a>
 
         <br/>
-        
+
         <div>
             <div class="dropdown">
                 <a class="dropbtn" href="/">Etusivu</a>       
@@ -33,12 +33,11 @@
             <div class="dropdown">
                 <button onclick="myFunction('god')" class="dropbtn">Hallintapaneeli</button>
                 <div id="god" class="dropdown-content">
-                    <a href="/add">Julkaise uusi artikkeli</a>
+                    <a href="/newsForm">Julkaise uusi artikkeli</a>
                     <a href="/micromanagement">Mikromanagerointi</a>
                 </div>
 
             </div>
-            <br/><br/>
             <div class="dropdown"> 
                 <button onclick="myFunction('newest')" class="dropbtn">kaikkien aikojen 5 katsotuinta</button>
                 <div id="newest" class="dropdown-content">
@@ -60,8 +59,35 @@
                     </ol>
                 </div>
             </div>       
-        </div>
 
+            <div class="dropdown"> 
+                <button onclick="myFunction('tops')" class="dropbtn">5 uusinta</button>
+                <div id="tops" class="dropdown-content">
+                    <ol>
+                        <li th:each="neew:${newest}">
+                            <a th:href="@{/news/{id}(id=${neew.id})}" th:text="${neew.label}">Lue lisää!</a>  
+                        </li>                       
+                    </ol>
+                </div>
+            </div>
+        </div><br/><br/>
+        <div th:if="${errors}">
+            <ul>
+                <li th:each="error:${errors}">
+                    <p th:text="${error}">error msg</p>  
+                </li>                       
+            </ul>
+        </div>
+        <div th:if="${warnings}">
+            <ul>
+                <li th:each="warning:${warnings}">
+                    <p th:text="${warning}">warning msg</p>  
+                </li>                       
+            </ul>
+        </div>
+        <div th:if="${success}">
+            <h4 th:text="${success}">success msg</h4>  
+        </div><br/>
         <div>
 
             <form method="POST" action="/category">  
@@ -69,26 +95,26 @@
                 <input type="text" name="category" placeholder="Kategorian nimi"></input>   
                 <input type="submit" value="Lisää kategoria"/> 
             </form>
- 
+
             <form method="POST" action="/writer">
                 Rekisteröi Kirjoittaja:
                 <input type="text" name="writer" placeholder="Kirjoittajan nimi"></input>   
-                <input type="submit" value="Lisää kategoria"/>  
+                <input type="submit" value="Lisää kirjoittaja"/>  
             </form>
             <br/>
             <form th:method="DELETE" action="/category">  
-                Poista Kategoriat:
-                <select multiple="multiple" name="categories">
+                Kategoriat:<br/>
+                <select multiple="multiple" size="8" style="width:100px" name="categories">
                     <option th:each="categ:${categories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
                 </select> 
-                <input type="submit" value="/postacat!"/> 
+                <input type="submit" value="poista kategoriat"/> 
             </form>
             <form th:method="DELETE" action="writer">  
-                Poista Kirjoittajat:
-                <select multiple="multiple" name="writers">
+                Kirjoittajat:<br/>
+                <select multiple="multiple" size="8" style="width:100px" name="writers">
                     <option th:each="w:${writers}" th:value="${w.id}" th:text="${w.name}">categ name</option>              
                 </select> 
-                <input type="submit" value="postawri!"/> 
+                <input type="submit" value="poista kirjoittajat"/> 
             </form>
         </div>
 

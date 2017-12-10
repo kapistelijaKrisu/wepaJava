@@ -1,4 +1,4 @@
-package wad.service;
+package wad.service.viewServices;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -5,9 +5,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PreRemove;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,10 +23,7 @@ public class Category extends AbstractPersistable<Long> implements Comparable<Ca
 
     private String name;
    
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "news_category",
-            joinColumns = @JoinColumn(name = "Category_id"),
-            inverseJoinColumns = @JoinColumn(name = "News_id"))
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER)
     private Set<News> news;
 
     public Category(String name) {

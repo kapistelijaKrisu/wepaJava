@@ -1,12 +1,10 @@
 package wad.domain;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -96,5 +94,9 @@ public class News extends AbstractPersistable<Long> implements Comparable<News> 
 
     public void deleteWriter(Writer writer) {
         writers.remove(writer);
+    }
+    
+    public String europeanPublishTime() {
+        return published.getDayOfMonth()+"."+published.getMonthValue()+"."+published.getYear();
     }
 }

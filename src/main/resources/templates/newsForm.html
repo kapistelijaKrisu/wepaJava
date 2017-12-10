@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title >Le news!</title>
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>News manager</title>
     </head>
-
     <body>
-        <h1 th:text="${news.label}"></h1>
         <div>
             <div class="dropdown">
                 <a class="dropbtn" href="/">Etusivu</a>       
@@ -27,7 +26,7 @@
             <div class="dropdown">
                 <button onclick="myFunction('god')" class="dropbtn">Hallintapaneeli</button>
                 <div id="god" class="dropdown-content">
-                    <a href="/add">Julkaise uusi artikkeli</a>
+                    <a href="/newsForm">Julkaise uusi artikkeli</a>
                     <a href="/micromanagement">Mikromanagerointi</a>
                 </div>
 
@@ -43,6 +42,8 @@
                     </ol>
                 </div>
             </div> 
+
+
             <div class="dropdown"> 
                 <button onclick="myFunction('tops')" class="dropbtn">5 uusinta</button>
                 <div id="tops" class="dropdown-content">
@@ -52,37 +53,96 @@
                         </li>                       
                     </ol>
                 </div>
-            </div>  
-            <div class="dropdown">
-                <a class="dropbtn" th:href="@{/modeNews/{id}(id=${news.id})}">muokkaa</a>       
             </div>
-            <div class="dropdown">
-                <form class="dropbtn" th:method="DELETE" th:action="@{/news/{id}(id=${news.id})}"> 
-                    
-                    
-                    <input type="submit" value="Poista uutinen!"/> 
-                </form>
-            </div>
-
         </div>
-        <div>
-
-            <img th:src="@{/images/{id}(id=${news.id})}" alt="Kuva ei näy!"/><br/>
-            <p th:text="${news.ingressi}"/>
-            <p th:text="${news.text}"/>  
-        </div>
-        <br/><br/><br/>
-        <div>
-            Kirjoittajat:<br/>
+        <div th:if="${errors}">
             <ul>
-                <li th:each="writer : ${news.writers}" th:text="${writer.name}"/>
+                <li th:each="error:${errors}">
+                    <p th:text="${error}">error msg</p>  
+                </li>                       
             </ul>
-            Kategoriat<br/>
+        </div>
+        <div th:if="${warnings}">
+            <ul>
+                <li th:each="warning:${warnings}">
+                    <p th:text="${warning}">warning msg</p>  
+                </li>                       
+            </ul>
+        </div>
+        <div th:if="${success}">
+            <p th:text="${success}">success msg</p>  
+        </div>
+        <div th:if="${news}">
+            <form method="POST" th:action="@{/modeNews/{id}(id=${news.id})}" enctype="multipart/form-data">   
+                Otsikko:<input type="text" name="label" id="label" th:value="${news.label}" /><br/>
+                Ingressi:<input type="text" name="lead" id="lead" th:value="${news.ingressi}"/><br/>
+                Uutisen teksti <br/>
+                <textarea cols=50 rows=10 name="text" id="text" th:text="${news.text}"></textarea> <br/>
+                <input type="submit" value="Päivitä!"/>
+            </form><br/>
 
-            <a th:each="categ:${news.categories}" th:href="@{/news/category/{id}/0(id=${categ.id})}" th:text="${categ.name}">categ name</a>
+            <form method="POST" th:action="@{/modeNews/addCategories/{id}(id=${news.id})}">  
+                Kategoriat:
+                <select multiple="multiple" size="8" style="width:100px" name="categories">
+                    <option th:each="categ:${missingCategories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
+                </select> 
+                <input type="submit" value="lisää!"/> 
+            </form>
 
+            <form method="POST" th:action="@{/modeNews/addWriters/{id}(id=${news.id})}">  
+                Kirjoittajat:
+                <select multiple="multiple" size="8" style="width:100px" name="writers">
+                    <option th:each="w:${missingWriters}" th:value="${w.id}" th:text="${w.name}">categ name</option>              
+                </select> 
+                <input type="submit" value="lisää!"/> 
+            </form>
+            <br/>
+            <form th:method="DELETE" th:action="@{/modeNews/deleteCategories/{id}(id=${news.id})}">  
+                Kategoriat:
+                <select multiple="multiple" size="8" style="width:100px" name="delCategories">
+                    <option th:each="categ:${news.categories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
+                </select> 
+                <input type="submit" value="poista!"/> 
+            </form>
+
+            <form th:method="DELETE" th:action="@{/modeNews/deleteWriters/{id}(id=${news.id})}">  
+                Kirjoittajat:
+                <select multiple="multiple" size="8" style="width:100px" name="delWriters">
+                    <option th:each="w:${news.writers}" th:value="${w.id}" th:text="${w.name}">categ name</option>              
+                </select> 
+                <input type="submit" value="poista!"/> 
+            </form>
+            <br/><br/>
+            <form method="POST" th:action="@{/modeNews/{id}/image(id=${news.id})}" enctype="multipart/form-data">  
+                Kuva:<input type="file" name="file" id="file"/>
+                <input type="submit" value="Vaihda kuva!"/>              
+            </form><br/>
+            Nykyinen kuva:
+            <img th:src="@{/images/{id}(id=${news.id})}" style="width:300px"/>
 
         </div>
+
+
+        <div th:unless="${news}">
+            <form method="POST" th:action="@{/makeNews}" enctype="multipart/form-data">
+                Otsikko:<input type="text" name="label" id="label" /><br/>
+                Ingressi:<input type="text" name="lead" id="lead"/><br/>
+                Uutisen tekst <br/>
+                <textarea cols=50 rows=10 name="text" id="text"></textarea> <br/>
+                Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>
+                <input type="submit" value="Julkaise!"/>
+
+                Valitse Kategoriat:
+                <select multiple="multiple" name="categories">
+                    <option th:each="categ:${categories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
+                </select> 
+                Valitse Kirjoittajat:
+                <select multiple="multiple" name="writers">
+                    <option th:each="w:${writers}" th:value="${w.id}" th:text="${w.name}">categ name</option>              
+                </select> 
+            </form>
+        </div>
+
         <script>
             /* When the user clicks on the button, 
              toggle between hiding and showing the dropdown content */

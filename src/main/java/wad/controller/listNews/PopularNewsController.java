@@ -16,9 +16,9 @@ import wad.domain.View;
 import wad.repository.CategoryRepository;
 import wad.repository.NewsRepository;
 import wad.repository.ViewRepository;
-import wad.service.ViewSorter;
+import wad.service.viewServices.ViewSorter;
 import wad.service.TimeService;
-import wad.service.ViewInfoGenerator;
+import wad.service.HTMLInfoGenerator;
 
 @Controller
 public class PopularNewsController {
@@ -35,7 +35,7 @@ public class PopularNewsController {
     @Autowired
     private ViewSorter viewSorter;
     @Autowired
-    private ViewInfoGenerator viewInfo;
+    private HTMLInfoGenerator viewInfo;
 
     @GetMapping("/news/views/week/{pageNro}")
     public String listByViews(Model model, @PathVariable int pageNro) {
@@ -45,7 +45,7 @@ public class PopularNewsController {
         model.addAttribute("newest", viewInfo.getNewestNews());
         model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
         model.addAttribute("top5", viewInfo.getMostPopularNews());
-        return "sorted";
+        return "listNews";
     }
 
     private List<News> getLastWeekViewedNews(int pageNro) {

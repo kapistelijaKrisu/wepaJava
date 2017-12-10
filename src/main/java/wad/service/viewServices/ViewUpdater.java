@@ -1,5 +1,5 @@
 
-package wad.service;
+package wad.service.viewServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +7,7 @@ import wad.domain.News;
 import wad.domain.View;
 import wad.repository.NewsRepository;
 import wad.repository.ViewRepository;
+import wad.service.TimeService;
 
 @Service
 public class ViewUpdater {

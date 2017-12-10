@@ -15,7 +15,7 @@ import wad.domain.Category;
 import wad.domain.News;
 import wad.repository.CategoryRepository;
 import wad.repository.NewsRepository;
-import wad.service.ViewInfoGenerator;
+import wad.service.HTMLInfoGenerator;
 
 @Controller
 public class CategoryNewsController {
@@ -26,7 +26,7 @@ public class CategoryNewsController {
     @Autowired
     private CategoryRepository catRepo;
 @Autowired
-    private ViewInfoGenerator viewInfo;
+    private HTMLInfoGenerator viewInfo;
 
     @GetMapping("/news/category/{catId}/{pageNro}")
     public String listByCat(Model model, @PathVariable long catId, @PathVariable int pageNro) {
@@ -39,7 +39,7 @@ public class CategoryNewsController {
         model.addAttribute("top5", viewInfo.getMostPopularNews());
 
 
-        return "sorted";
+        return "listNews";
     }
 
     private Page<News> getNewsBySortType(long id, int pageNro) {

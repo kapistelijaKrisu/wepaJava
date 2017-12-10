@@ -1,5 +1,5 @@
 
-package wad.controller.listNews;
+package wad.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import wad.domain.News;
 import wad.repository.CategoryRepository;
 import wad.repository.NewsRepository;
-import wad.service.ViewInfoGenerator;
+import wad.service.HTMLInfoGenerator;
 
 @Transactional
 @Controller
@@ -21,9 +21,7 @@ public class MainPageController {
     @Autowired
     private NewsRepository newsRepo;
     @Autowired
-    private CategoryRepository catRepo;
-    @Autowired
-    private ViewInfoGenerator viewInfo;
+    private HTMLInfoGenerator htmlInfo;
     
     @GetMapping("/")
     public String list(Model model) {
@@ -31,9 +29,9 @@ public class MainPageController {
         Page<News> news = newsRepo.findAll(page);
         model.addAttribute("news", news);
         
-        model.addAttribute("newest", viewInfo.getNewestNews());
-        model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
-        model.addAttribute("top5", viewInfo.getMostPopularNews());
+        model.addAttribute("newest", htmlInfo.getNewestNews());
+        model.addAttribute("categories", htmlInfo.getCategoriesByAlphabet());
+        model.addAttribute("top5", htmlInfo.getMostPopularNews());
         return "index";
 }
 }
