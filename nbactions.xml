@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    
+    <action>
+        <actionName>CUSTOM-checkstyle</actionName>
+        <displayName>Checkstyle</displayName>
+        <goals>
+            <goal>jxr:jxr</goal>
+            <goal>checkstyle:checkstyle</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>run</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>process-classes</goal>
+            <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
+        </goals>
+        <properties>
+            <exec.args>-classpath %classpath wad.AliveApplication</exec.args>
+            <exec.executable>java</exec.executable>
+        </properties>
+    </action>
+    <action>
+            <actionName>CUSTOM-testCoverage</actionName>
+            <displayName>testCoverage</displayName>
+            <goals>
+                <goal>org.jacoco:jacoco-maven-plugin:0.7.10-SNAPSHOT:report</goal>
+            </goals>
+            <properties>
+                <Env.JAVA_HOME>/home/kbvalto/jdk1.8.0_111</Env.JAVA_HOME>
+            </properties>
+        </action>
+</actions>
