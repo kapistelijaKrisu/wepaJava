@@ -1,4 +1,3 @@
-
 package wad.domain;
 
 import java.util.Objects;
@@ -14,16 +13,15 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @Data
 @Entity
-public class View extends AbstractPersistable<Long> implements Comparable<View>{
-    
+public class View extends AbstractPersistable<Long> implements Comparable<View> {
+
     private int year;
-    private int week;  
+    private int week;
     private long views;
     @ManyToOne
     @JoinColumn
     private News news;
-    
- 
+
     @Override
     public int hashCode() {
         return Objects.hash(year, week, views);
@@ -61,12 +59,10 @@ public class View extends AbstractPersistable<Long> implements Comparable<View>{
             return week - o.getWeek();
         }
     }
-    
+
     @Override
     public String toString() {
-        return "views: "+views+ " year.week:" + year +"."+week;
+        return "views: " + views + " year.week:" + year + "." + week;
     }
-    
-
 
 }

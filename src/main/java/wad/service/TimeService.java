@@ -13,19 +13,18 @@ public class TimeService {
 
         return week;
     }
-    
+
     public int getLastWeekNumber() {
         Calendar now = Calendar.getInstance();
-        
-        int lastWeek = now.get(Calendar.WEEK_OF_YEAR-1);
+
+        int lastWeek = now.get(Calendar.WEEK_OF_YEAR - 1);
         if (lastWeek == 0) {
-            now.set(Calendar.YEAR -1, Calendar.DECEMBER, 31);
-            System.out.println(now.get(Calendar.WEEK_OF_YEAR));
+            now.set(Calendar.YEAR - 1, Calendar.DECEMBER, 31);
         }
 
         return lastWeek;
     }
-    
+
     public int getCurrentYear() {
         Calendar now = Calendar.getInstance();
         int year = now.get(Calendar.YEAR);

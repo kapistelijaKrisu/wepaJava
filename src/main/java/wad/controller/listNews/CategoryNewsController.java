@@ -25,7 +25,7 @@ public class CategoryNewsController {
     private NewsRepository newsRepo;
     @Autowired
     private CategoryRepository catRepo;
-@Autowired
+    @Autowired
     private HTMLInfoGenerator viewInfo;
 
     @GetMapping("/news/category/{catId}/{pageNro}")
@@ -33,11 +33,10 @@ public class CategoryNewsController {
         Page<News> news = getNewsBySortType(catId, pageNro);
         model.addAttribute("news", news);
         model.addAttribute("pages", getPageCount(catId, pageNro));
-        
+
         model.addAttribute("newest", viewInfo.getNewestNews());
         model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
         model.addAttribute("top5", viewInfo.getMostPopularNews());
-
 
         return "listNews";
     }
@@ -67,7 +66,7 @@ public class CategoryNewsController {
             pageCount = newsRepo.count() / PAGE_SIZE;
 
         }
-         List<Integer> pages = new ArrayList<>();
+        List<Integer> pages = new ArrayList<>();
         for (int i = Math.max(pageNro - 10, 0); i < Math.min(pageNro + 10, pageCount); i++) {
             pages.add(i);
         }

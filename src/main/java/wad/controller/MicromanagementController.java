@@ -75,10 +75,8 @@ public class MicromanagementController {
         if (errors.isEmpty()) {//varoitetaan samannimisyydestä //muuta verifiointia ei ole
             List<String> warning = writerVerifier.warn(w);
             if (!warning.isEmpty()) {
-                System.out.println("warnigns added");
                 attributes.addFlashAttribute("warnings", warning);
             }
-            System.out.println("above");
             attributes.addFlashAttribute("success", "Kirjoittaja on onnistuneesti rekisteröity!");
             writerRepo.save(w);
         } else {

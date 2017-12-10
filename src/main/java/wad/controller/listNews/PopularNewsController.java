@@ -3,7 +3,6 @@ package wad.controller.listNews;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import wad.domain.News;
 import wad.domain.View;
-import wad.repository.CategoryRepository;
-import wad.repository.NewsRepository;
 import wad.repository.ViewRepository;
 import wad.service.viewServices.ViewSorter;
 import wad.service.TimeService;
@@ -25,11 +22,7 @@ public class PopularNewsController {
 
     private final int PAGESIZE = 5;
     @Autowired
-    private NewsRepository newsRepo;
-    @Autowired
     private ViewRepository viewRepo;
-    @Autowired
-    private CategoryRepository catRepo;
     @Autowired
     private TimeService timeCalculator;
     @Autowired
@@ -39,9 +32,9 @@ public class PopularNewsController {
 
     @GetMapping("/news/views/week/{pageNro}")
     public String listByViews(Model model, @PathVariable int pageNro) {
-        model.addAttribute("news", getLastWeekViewedNews(pageNro));        
+        model.addAttribute("news", getLastWeekViewedNews(pageNro));
         model.addAttribute("pages", getPageCount(PAGESIZE, pageNro));
-        
+
         model.addAttribute("newest", viewInfo.getNewestNews());
         model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
         model.addAttribute("top5", viewInfo.getMostPopularNews());

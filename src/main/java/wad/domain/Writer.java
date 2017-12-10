@@ -3,13 +3,9 @@ package wad.domain;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.PreRemove;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +18,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Writer extends AbstractPersistable<Long> implements Comparable<Writer> {
 
     private String name;
-    
+
     @ManyToMany(mappedBy = "writers", fetch = FetchType.EAGER)
     private Set<News> news;
 

@@ -1,4 +1,3 @@
-
 package wad.controller.newsForm;
 
 import java.util.ArrayList;
@@ -17,11 +16,12 @@ import wad.service.validators.NewsValidator;
 @Transactional
 @Controller
 public class ModeNewsTextsController {
+
     @Autowired
     private NewsValidator newsValidator;
     @Autowired
     private NewsRepository newsRepo;
-    
+
     // päivitys tekstikenttiin
     @PostMapping("/modeNews/{id}")
     public String save(@RequestParam("label") String label,

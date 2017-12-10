@@ -1,4 +1,3 @@
-
 package wad.controller.newsForm;
 
 import java.util.ArrayList;
@@ -17,22 +16,20 @@ import wad.repository.FileObjectRepository;
 import wad.repository.NewsRepository;
 import wad.service.InputHandler;
 import wad.service.validators.FileObjectValidator;
-import wad.service.validators.NewsValidator;
 
 @Transactional
 @Controller
 public class ModeNewsImageController {
+
     @Autowired
     private FileObjectRepository fileRepo;
     @Autowired
     private FileObjectValidator fileValidator;
     @Autowired
-    private NewsValidator newsValidator;
-    @Autowired
     private NewsRepository newsRepo;
     @Autowired
     private InputHandler inputHandler;
-    
+
     //kuvan muokkaus
     @PostMapping("/modeNews/{id}/image")
     public String updateImageOnNews(@RequestParam("file") MultipartFile file,

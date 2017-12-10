@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public final class WriterValidator extends Validator<Writer> {
+
     private final int maxLength;
     private final int minLength;
     private final int maxSpecialCharacterAmount;
@@ -26,14 +27,14 @@ public final class WriterValidator extends Validator<Writer> {
             errors.add("Kirjoittajan nimi tulee olla " + minLength + "-" + maxLength + " merkkiä pitkä!");
         }
         if (specialCharacterCounter(t.getName(), SPACES_IGNORED) > maxSpecialCharacterAmount) {
-             errors.add("Kirjoittajan nimessä saa olla enintään " + maxSpecialCharacterAmount + " erikoismerkkiä");
+            errors.add("Kirjoittajan nimessä saa olla enintään " + maxSpecialCharacterAmount + " erikoismerkkiä");
         }
         if (alphabeticCharacterCounter(t.getName()) < minimumAlphaLetterCount) {
-            errors.add("Kirjoittajan nimellä tulee olla vähintään " +
-                    minimumAlphaLetterCount +
-                    " aakkosellista kirjainta unicodin mukaan!");
+            errors.add("Kirjoittajan nimellä tulee olla vähintään "
+                    + minimumAlphaLetterCount
+                    + " aakkosellista kirjainta unicodin mukaan!");
         }
-        
+
         return errors;
     }
 

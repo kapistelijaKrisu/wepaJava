@@ -10,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import wad.domain.Category;
 import wad.domain.News;
-import wad.domain.View;
 import wad.repository.CategoryRepository;
 import wad.repository.NewsRepository;
 import wad.repository.ViewRepository;

@@ -61,6 +61,5 @@ public class WriterVerifierTest {
         n.deleteWriter(a);
 
         assertFalse(writerVerifier.verifyDelete(b).isEmpty());
-        System.out.println(n.getCategories().size());
     }
 }

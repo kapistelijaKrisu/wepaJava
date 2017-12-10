@@ -36,7 +36,6 @@ public final class CategoryValidator extends Validator<Category> {
         if (specialCharacterCounter(t.getName(), SPACES_COUNT) > maxSpacesAmount) {
             errors.add("Kirjoittajan nimessä saa olla enintään " + maxSpacesAmount + " erikoismerkkiä");
         }
-        
 
         return errors;
     }

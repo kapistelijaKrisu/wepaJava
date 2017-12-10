@@ -1,5 +1,5 @@
 package wad.domain;
-        
+
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -32,11 +32,11 @@ public class FileObject extends AbstractPersistable<Long> {
         long length = contentLength;
         int namehash = name.hashCode();
         int typehash = contentType.hashCode();
-        
+
         if (length > Integer.MAX_VALUE - namehash - typehash) {
             length = length % (Integer.MAX_VALUE - namehash - typehash);
         }
-        
+
         return (int) (name.hashCode() + length + contentType.hashCode());
     }
 

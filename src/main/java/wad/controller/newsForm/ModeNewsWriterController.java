@@ -36,17 +36,18 @@ public class ModeNewsWriterController {
         News news = newsRepo.getOne(id);
         handleDeleteWriterInput(delWriters, news);
         //verify
-        
+
         List<String> errors = newsValidator.validate(news);
         if (errors.isEmpty()) {
-        newsRepo.save(news);
-        attributes.addAttribute("success", "Uutiselta on onnistuneesti poistettu kirjoittajat!");
+            newsRepo.save(news);
+            attributes.addAttribute("success", "Uutiselta on onnistuneesti poistettu kirjoittajat!");
         } else {
             attributes.addAttribute("errors", errors);
             attributes.addAttribute("news", news);
         }
         return "redirect:/modeNews/" + news.getId();
     }
+
     private void handleDeleteWriterInput(String[] writers, News n) {
         for (String writer : writers) {
             Writer w = writerRepo.getOne(Long.parseLong(writer));
@@ -54,7 +55,6 @@ public class ModeNewsWriterController {
         }
     }
 
-    
     @PostMapping("/modeNews/addWriters/{id}")
     public String addWriters(
             @PathVariable("id") long id,
@@ -62,15 +62,16 @@ public class ModeNewsWriterController {
 
         News news = newsRepo.getOne(id);
         handleWriterInput(delArtists, news);
-      
+
         newsRepo.save(news);
         return "redirect:/modeNews/" + news.getId();
     }
+
     private void handleWriterInput(String[] writers, News news) {
         for (String writerId : writers) {
             Writer w = writerRepo.getOne(Long.parseLong(writerId));
             if (w != null) {
-            news.addWriter(w);
+                news.addWriter(w);
             }
         }
     }

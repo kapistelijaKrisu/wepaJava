@@ -1,4 +1,3 @@
-
 package wad.service.verifiers;
 
 import java.util.ArrayList;
@@ -10,7 +9,8 @@ import wad.repository.WriterRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WriterVerifier implements Verifier<Writer>{
+public class WriterVerifier implements Verifier<Writer> {
+
     @Autowired
     WriterRepository writerRepo;
 
@@ -21,16 +21,16 @@ public class WriterVerifier implements Verifier<Writer>{
 
     @Override
     public List<String> verifyDelete(Writer t) {
-        List<String> errors = new ArrayList<>();      
+        List<String> errors = new ArrayList<>();
         for (News aNew : t.getNews()) {
             if (aNew.getWriters().size() == 1) {
-                errors.add("Uutisella on pakko olla ainakin yksi kirjoittaja! Et voi poistaa tätä kategoriaa"+
-                " voit muokata uutista juuripolkuun lisäämällä /modeNews/"+aNew.getId());
+                errors.add("Uutisella on pakko olla ainakin yksi kirjoittaja! Et voi poistaa tätä kategoriaa"
+                        + " voit muokata uutista juuripolkuun lisäämällä /modeNews/" + aNew.getId());
             }
         }
         return errors;
     }
-    
+
     @Override
     public List<String> warn(Writer t) {
         List<String> warnings = new ArrayList<>();
@@ -41,6 +41,4 @@ public class WriterVerifier implements Verifier<Writer>{
         return warnings;
     }
 
-    
-    
 }

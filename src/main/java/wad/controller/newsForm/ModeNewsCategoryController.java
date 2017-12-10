@@ -31,15 +31,15 @@ public class ModeNewsCategoryController {
     public String deleteCategories(
             @PathVariable("id") long id,
             @RequestParam("delCategories") String[] delCategories,
-            RedirectAttributes  attributes) {
+            RedirectAttributes attributes) {
 
         News news = newsRepo.getOne(id);
         handleDeleteCategoryInput(delCategories, news);
         List<String> errors = newsValidator.validate(news);
         if (errors.isEmpty()) {
-        newsRepo.save(news);
-        
-        attributes.addAttribute("success", "Uutiselta on onnistuneesti poistettu kategoriat!");
+            newsRepo.save(news);
+
+            attributes.addAttribute("success", "Uutiselta on onnistuneesti poistettu kategoriat!");
         } else {
             attributes.addAttribute("errors", errors);
         }

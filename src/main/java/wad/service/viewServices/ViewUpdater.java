@@ -1,4 +1,3 @@
-
 package wad.service.viewServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +10,14 @@ import wad.service.TimeService;
 
 @Service
 public class ViewUpdater {
+
     @Autowired
     private TimeService timeCalculator;
     @Autowired
     private ViewRepository viewRepo;
-     @Autowired
+    @Autowired
     private NewsRepository newsRepo;
-    
+
     public void addView(News news) {
         int week = timeCalculator.getCurrentWeekNumber();
         int year = timeCalculator.getCurrentYear();
@@ -28,7 +28,7 @@ public class ViewUpdater {
             news.getViews().add(views);
             newsRepo.save(news);
         } else {
-            views.setViews(views.getViews()+1);
+            views.setViews(views.getViews() + 1);
             viewRepo.save(views);
         }
     }

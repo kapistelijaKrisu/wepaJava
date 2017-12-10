@@ -1,4 +1,3 @@
-
 package wad.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +14,14 @@ import wad.service.viewServices.ViewUpdater;
 @Transactional
 @Controller
 public class SingleNewsController {
- 
+
     @Autowired
     private HTMLInfoGenerator viewInfo;
     @Autowired
     private NewsRepository newsRepo;
     @Autowired
     ViewUpdater viewUpdater;
-    
+
     @GetMapping("/news/{id}")
     public String readSingle(Model model, @PathVariable long id) {
         model.addAttribute("top5", viewInfo.getMostPopularNews());

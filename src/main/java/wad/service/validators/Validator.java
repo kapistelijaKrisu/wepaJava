@@ -7,18 +7,18 @@ public abstract class Validator<T> {
     protected static final int SPACES_COUNT = 0;
     protected static final int SPACES_IGNORED = 1;
 
-    private static final String illegalModeMSG = "mode not recognized, only 0 or 1 are allowed!";
-    private static final String minOverMaxMsg = "min cannot be bigger than max";
+    private static final String ILLEGAL_MODE_MSG = "mode not recognized, only 0 or 1 are allowed!";
+    private static final String MINOVERMAXMSG = "min cannot be bigger than max";
 
     public abstract List<String> validate(T t);
 
     protected boolean validateStringLength(String toValidate, int min, int max, int mode) throws IllegalArgumentException {
         if (min > max) {
-            throw new IllegalArgumentException(minOverMaxMsg);
+            throw new IllegalArgumentException(MINOVERMAXMSG);
         } else if (mode < 0 && mode > 1) {
-            throw new IllegalArgumentException(illegalModeMSG);
+            throw new IllegalArgumentException(ILLEGAL_MODE_MSG);
         }
-        
+
         if (mode == SPACES_IGNORED) {
             int length = toValidate.trim().length();
             return length >= min && length <= max;
@@ -50,7 +50,7 @@ public abstract class Validator<T> {
         }
         return count;
     }
-    
+
     protected int alphabeticCharacterCounter(String toValidate) {
         int count = 0;
         for (int i = 0; i < toValidate.length(); i++) {

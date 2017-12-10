@@ -95,8 +95,8 @@ public class News extends AbstractPersistable<Long> implements Comparable<News> 
     public void deleteWriter(Writer writer) {
         writers.remove(writer);
     }
-    
+
     public String europeanPublishTime() {
-        return published.getDayOfMonth()+"."+published.getMonthValue()+"."+published.getYear();
+        return published.getDayOfMonth() + "." + published.getMonthValue() + "." + published.getYear();
     }
 }

@@ -58,6 +58,5 @@ public class CategoryVerifierTest {
         n.deleteCategory(a);
 
         assertFalse(catVerifier.verifyDelete(b).isEmpty());
-        System.out.println(n.getCategories().size());
     }
 }

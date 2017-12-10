@@ -59,6 +59,5 @@ public class FileObjectValidator extends Validator<FileObject> {
     public String[] getValidTypes() {
         return validTypes;
     }
-    
-    
+
 }

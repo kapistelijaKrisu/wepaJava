@@ -94,7 +94,6 @@ public class NewsFormController {
             attributes.addFlashAttribute("success", "Uutinen on onnistuneesti julkaistu!");
             return "redirect:/modeNews/" + news.getId();
         } else {
-            System.out.println("aaaaa");
             attributes.addFlashAttribute("errors", errors);
             return "redirect:/newsForm";
         }

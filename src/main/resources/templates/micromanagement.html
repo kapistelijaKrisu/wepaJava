@@ -90,26 +90,26 @@
         </div><br/>
         <div>
 
-            <form method="POST" action="/category">  
+            <form method="POST" id="categoryAdd" action="/category">  
                 Lisää uusi kategoria:
                 <input type="text" name="category" placeholder="Kategorian nimi"></input>   
                 <input type="submit" value="Lisää kategoria"/> 
             </form>
 
-            <form method="POST" action="/writer">
+            <form method="POST" id="writerAdd" action="/writer">
                 Rekisteröi Kirjoittaja:
                 <input type="text" name="writer" placeholder="Kirjoittajan nimi"></input>   
                 <input type="submit" value="Lisää kirjoittaja"/>  
             </form>
             <br/>
-            <form th:method="DELETE" action="/category">  
+            <form th:method="DELETE" id="categoryDel" action="/category">  
                 Kategoriat:<br/>
                 <select multiple="multiple" size="8" style="width:100px" name="categories">
                     <option th:each="categ:${categories}" th:value="${categ.id}" th:text="${categ.name}">categ name</option>              
                 </select> 
                 <input type="submit" value="poista kategoriat"/> 
             </form>
-            <form th:method="DELETE" action="writer">  
+            <form th:method="DELETE" id="categoryDel" action="writer">  
                 Kirjoittajat:<br/>
                 <select multiple="multiple" size="8" style="width:100px" name="writers">
                     <option th:each="w:${writers}" th:value="${w.id}" th:text="${w.name}">categ name</option>              

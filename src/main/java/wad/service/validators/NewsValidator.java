@@ -30,7 +30,7 @@ public class NewsValidator extends Validator<News> {
         errors.addAll(validateLabel(t.getLabel()));
         errors.addAll(validateIngressi(t.getIngressi()));
         errors.addAll(validateText(t.getText()));
-        
+
         if (!atLeastOne(t.getCategories())) {
             errors.add("Uutisella täytyy kuulua ainakin yhteen kategoriaan!");
         }
@@ -40,14 +40,14 @@ public class NewsValidator extends Validator<News> {
         if (t.getKuva() == null) {
             errors.add("Uutisella täytyy olla kuva!");
         }
-        
+
         return errors;
     }
-    
+
     private boolean atLeastOne(Set set) {
-        return set != null && set.size()>=1;
+        return set != null && set.size() >= 1;
     }
-    
+
     private List<String> hasDateTime(News t) {
         List<String> errors = new ArrayList<>();
         if (t.getPublished() == null) {
@@ -65,9 +65,9 @@ public class NewsValidator extends Validator<News> {
             errors.add("Otsikossa saa olla enintään " + maxSpecialCharacterAmount + " erikoismerkkiä");
         }
         if (alphabeticCharacterCounter(t) < minimumAlphaLetterCount) {
-            errors.add("Otsikossa tulee olla vähintään " +
-                    minimumAlphaLetterCount +
-                    " aakkosellista kirjainta unicodin mukaan!");
+            errors.add("Otsikossa tulee olla vähintään "
+                    + minimumAlphaLetterCount
+                    + " aakkosellista kirjainta unicodin mukaan!");
         }
         return errors;
     }
@@ -78,9 +78,9 @@ public class NewsValidator extends Validator<News> {
             errors.add("Ingressin tulee olla " + minLength + "-" + maxLeadLength + " merkkiä!");
         }
         if (alphabeticCharacterCounter(t) < minimumAlphaLetterCount) {
-            errors.add("Ingressissä tulee olla vähintään " +
-                    minimumAlphaLetterCount +
-                    " aakkosellista kirjainta unicodin mukaan!");
+            errors.add("Ingressissä tulee olla vähintään "
+                    + minimumAlphaLetterCount
+                    + " aakkosellista kirjainta unicodin mukaan!");
         }
         return errors;
     }
@@ -91,9 +91,9 @@ public class NewsValidator extends Validator<News> {
             errors.add("Tekstin tulee olla " + minLength + "-" + maxTextLength + " merkkiä!");
         }
         if (alphabeticCharacterCounter(t) < minimumAlphaLetterCount) {
-            errors.add("Tekstissä tulee olla vähintään " +
-                    minimumAlphaLetterCount +
-                    " aakkosellista kirjainta unicodin mukaan!");
+            errors.add("Tekstissä tulee olla vähintään "
+                    + minimumAlphaLetterCount
+                    + " aakkosellista kirjainta unicodin mukaan!");
         }
         return errors;
     }
