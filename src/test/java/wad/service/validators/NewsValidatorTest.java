@@ -21,7 +21,7 @@ public class NewsValidatorTest {
 
     @Before
     public void setUp() throws Exception {
-        news = new News("a a", "a a", "a a", null);
+        news = new News("aaaaabbbbb", "aaaaabbbbb", "aaaaabbbbb", null);
         news.addWriter(new Writer("a"));
         news.addCategory(new Category("a"));
         news.setPublished(LocalDateTime.now());
@@ -38,18 +38,18 @@ public class NewsValidatorTest {
     @Test
     public void labelingWorks() {
         String mock = "";
-        for (int i = 0; i < 31; i++) {
+        for (int i = 0; i < 123; i++) {
             mock += "a";
         }
         news.setLabel(mock);
         assertTrue(newsValidator.validate(news).isEmpty());
-        news.setLabel("###aa");
+        news.setLabel("#####aaaaaaaaaa#####");
         mock = "";
         assertTrue(newsValidator.validate(news).isEmpty());
-        for (int i = 0; i < 28; i++) {
+        for (int i = 0; i < 113; i++) {
             mock += "a";
         }
-        mock += "###";
+        mock += "##########";
         news.setLabel(mock);
         assertTrue(newsValidator.validate(news).isEmpty());
 
@@ -58,19 +58,18 @@ public class NewsValidatorTest {
     @Test
     public void ingressiWorks() {
         String mock = "";
-        for (int i = 0; i < 127; i++) {
+        for (int i = 0; i < 1234; i++) {
             mock += "a";
         }
         news.setIngressi(mock);
         assertTrue(newsValidator.validate(news).isEmpty());
-        news.setIngressi("###aa");
+        news.setIngressi("#####aaaaa#####aaaaa");
         mock = "";
         assertTrue(newsValidator.validate(news).isEmpty());
-        for (int i = 0; i < 123; i++) {
+        for (int i = 0; i < 1214; i++) {
             mock += " ";
         }
-        mock += "aa";
-        mock += "##";
+        mock += "#####aaaaa#####aaaaa";
         news.setIngressi(mock);
         assertTrue(newsValidator.validate(news).isEmpty());
     }
@@ -78,19 +77,19 @@ public class NewsValidatorTest {
     @Test
     public void textWorks() {
         String mock = "";
-        for (int i = 0; i < 1234; i++) {
+        for (int i = 0; i < 12345; i++) {
             mock += "a";
         }
 
         news.setText(mock);
         assertTrue(newsValidator.validate(news).isEmpty());
-        news.setText("###aa");
+        news.setText("#####aaaaa#####aaaaaa");
         mock = "";
         assertTrue(newsValidator.validate(news).isEmpty());
         for (int i = 0; i < 1232; i++) {
             mock += " ";
         }
-        mock += "aa";
+        mock += "aaaaabbbbb";
         news.setText(mock);
         assertTrue(newsValidator.validate(news).isEmpty());
     }
@@ -98,42 +97,40 @@ public class NewsValidatorTest {
     @Test
     public void illegalTextWorks() {
         String mock = "";
-        for (int i = 0; i < 1235; i++) {
+        for (int i = 0; i < 12346; i++) {
             mock += "a";
         }
         news.setText(mock);
         assertFalse(newsValidator.validate(news).isEmpty());
-        news.setText("#a");
-        assertFalse(newsValidator.validate(news).isEmpty());
-        news.setText("#a<");
-        assertFalse(newsValidator.validate(news).isEmpty());       
+        news.setText("#aaaabbbbb");
+        assertFalse(newsValidator.validate(news).isEmpty());    
     }
     
     @Test
     public void illegalIngressiWorks() {
         String mock = "";
-        for (int i = 0; i < 128; i++) {
+        for (int i = 0; i < 1235; i++) {
             mock += "a";
         }
         news.setIngressi(mock);
         assertFalse(newsValidator.validate(news).isEmpty());
-        news.setIngressi("#a");
+        news.setIngressi("#aaaabbbbb");
         assertFalse(newsValidator.validate(news).isEmpty());
-        news.setIngressi("#a<");
-        assertFalse(newsValidator.validate(news).isEmpty());       
+        news.setIngressi("#####aaaa#####aaaaa#");
+        assertFalse(newsValidator.validate(news).isEmpty());      
     }
     
     @Test
     public void illegalLabelWorks() {
         String mock = "";
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < 124; i++) {
             mock += "a";
         }
         news.setLabel(mock);
         assertFalse(newsValidator.validate(news).isEmpty());
-        news.setLabel("#a");
+        news.setLabel("#aaaabbbbb");
         assertFalse(newsValidator.validate(news).isEmpty());
-        news.setLabel("#a<");
+        news.setLabel("#####aaaaa#####aaaaa#");
         assertFalse(newsValidator.validate(news).isEmpty());       
     }
     

@@ -15,12 +15,12 @@ public class NewsValidator extends Validator<News> {
     private final int minimumAlphaLetterCount;
 
     public NewsValidator() {
-        this.maxLabelLength = 31;
-        this.maxLeadLength = 127;
-        this.maxTextLength = 1234;
-        this.maxSpecialCharacterAmount = 3;
-        this.minLength = 3;
-        this.minimumAlphaLetterCount = 2;
+        this.maxLabelLength = 123;
+        this.maxLeadLength = 1234;
+        this.maxTextLength = 12345;
+        this.maxSpecialCharacterAmount = 10;
+        this.minLength = 10;
+        this.minimumAlphaLetterCount = 10;
     }
 
     @Override
