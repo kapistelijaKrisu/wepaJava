@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -21,8 +22,11 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class News extends AbstractPersistable<Long> implements Comparable<News> {
 
+    @Column(name="label", length=123)
     private String label;
+    @Column(name="ingressi", length=255)
     private String ingressi;
+    @Column(name="text", length=12345)
     private String text;
     private LocalDateTime published;
     @OneToOne
