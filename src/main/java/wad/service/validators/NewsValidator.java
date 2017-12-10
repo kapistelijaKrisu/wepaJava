@@ -16,9 +16,9 @@ public class NewsValidator extends Validator<News> {
 
     public NewsValidator() {
         this.maxLabelLength = 123;
-        this.maxLeadLength = 1234;
+        this.maxLeadLength = 255;
         this.maxTextLength = 12345;
-        this.maxSpecialCharacterAmount = 10;
+        this.maxSpecialCharacterAmount = 20;
         this.minLength = 10;
         this.minimumAlphaLetterCount = 10;
     }

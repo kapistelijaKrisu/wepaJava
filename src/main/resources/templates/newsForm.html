@@ -74,10 +74,10 @@
         <br/><br/>
         <div th:if="${news}">
             <form method="POST" th:action="@{/modeNews/{id}(id=${news.id})}" enctype="multipart/form-data">   
-                Otsikko:<input type="text" name="label" id="label" th:value="${news.label}" /><br/>
-                Ingressi:<input type="text" name="lead" id="lead" th:value="${news.ingressi}"/><br/>
+                Otsikko:<input type="text" style="width:600px" name="label" id="label" th:value="${news.label}" /><br/>
+                Ingressi:<input type="text" name="lead" style="width:600px" id="lead" th:value="${news.ingressi}"/><br/>
                 Uutisen teksti <br/>
-                <textarea cols=50 rows=10 name="text" id="text" th:text="${news.text}"></textarea> <br/>
+                <textarea cols=50 rows=15 name="text" id="text" th:text="${news.text}"></textarea> <br/>
                 <input type="submit" value="Päivitä!"/>
             </form><br/>
 
@@ -116,7 +116,7 @@
             <form method="POST" th:action="@{/modeNews/{id}/image(id=${news.id})}" enctype="multipart/form-data">  
                 Kuva:<input type="file" name="file" id="file"/>
                 <input type="submit" value="Vaihda kuva!"/>              
-            </form><br/>
+            </form><br/><br/>
             Nykyinen kuva:
             <img th:src="@{/images/{id}(id=${news.id})}" style="width:300px"/>
 
@@ -125,10 +125,10 @@
 
         <div th:unless="${news}">
             <form method="POST" th:action="@{/makeNews}" enctype="multipart/form-data">
-                Otsikko:<input type="text" name="label" id="label" /><br/>
-                Ingressi:<input type="text" name="lead" id="lead"/><br/>
+                Otsikko:<input type="text" style="width:600px" name="label" id="label" /><br/>
+                Ingressi:<input type="text" style="width:600px" name="lead" id="lead"/><br/>
                 Uutisen teksti <br/>
-                <textarea cols=50 rows=10 name="text" id="text"></textarea> <br/>
+                <textarea cols=100 rows=15 name="text" id="text"></textarea> <br/>
                 Kuva:<input type="file" name="file" id="file"/><br/><br/><br/>
                 <input type="submit" value="Julkaise!"/>
 
