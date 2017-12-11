@@ -1,8 +1,6 @@
 package wad.controller.newsForm;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import wad.domain.*;
 import wad.repository.*;
-import wad.service.InputHandler;
 import wad.service.HTMLInfoGenerator;
-import wad.service.validators.FileObjectValidator;
-import wad.service.validators.NewsValidator;
+import wad.service.dataHandlers.NewsHandler;
+import wad.service.viewServices.ViewUpdater;
 
 @Transactional
 @Controller
@@ -30,19 +27,26 @@ public class NewsFormController {
     @Autowired
     private NewsRepository newsRepo;
     @Autowired
-    private CategoryRepository catRepo;
-    @Autowired
     private WriterRepository writerRepo;
     @Autowired
-    private FileObjectRepository fileRepo;
+    private NewsHandler newsHandler;
     @Autowired
-    private FileObjectValidator fileValidator;
-    @Autowired
-    private NewsValidator newsValidator;
-    @Autowired
-    private InputHandler inputHandler;
+    private ViewUpdater viewUpdater;
 
-    //get new news form
+    //näytä
+    @GetMapping("/news/{id}")
+    public String readSingle(Model model, @PathVariable long id) {
+        model.addAttribute("top5", viewInfo.getMostPopularNews());
+        News news = newsRepo.findById(id).get();
+        viewUpdater.addView(news);
+        model.addAttribute("news", news);
+
+        model.addAttribute("newest", viewInfo.getNewestNews());
+        model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
+        model.addAttribute("top5", viewInfo.getMostPopularNews());
+        return "singleNews";
+    }
+    //uuden formi
     @GetMapping("/newsForm")
     public String addformEmpty(Model model) {
         model.addAttribute("writers", writerRepo.findAll());
@@ -53,14 +57,14 @@ public class NewsFormController {
         return "newsForm";
     }
 
-    //get edit form
+    //muokkausformi
     @GetMapping("/modeNews/{id}")
     public String addform(Model model, @PathVariable long id) {
         News n = newsRepo.getOne(id);
         model.addAttribute("news", n);
 
-        model.addAttribute("missingWriters", getNotHavingWriters(n));
-        model.addAttribute("missingCategories", getNotHavingCategories(n));
+        model.addAttribute("missingWriters", newsHandler.getNotHavingWriters(n));
+        model.addAttribute("missingCategories", newsHandler.getNotHavingCategories(n));
 
         model.addAttribute("newest", viewInfo.getNewestNews());
         model.addAttribute("categories", viewInfo.getCategoriesByAlphabet());
@@ -68,7 +72,7 @@ public class NewsFormController {
         return "newsForm";
     }
 
-    //uuden posti
+    //uus uutinen
     @PostMapping("/makeNews")
     public String save(@RequestParam("file") MultipartFile file,
             @RequestParam("label") String otsikko,
@@ -78,23 +82,10 @@ public class NewsFormController {
             @RequestParam("writers") String[] writers,
             RedirectAttributes attributes) throws IOException {
 
-        News news = new News(otsikko, ingressi, teksti, null);
-        inputHandler.handleCategoryInput(news, categories);
-        inputHandler.handleWritersInput(news, writers);
-
-        List<String> errors = new ArrayList<>();
-        FileObject fo = inputHandler.handleFileObjectOpening(file, errors);
-        errors.addAll(fileValidator.validate(fo));
-        news.setKuva(fo);
-        errors.addAll(newsValidator.validate(news));
-
-        if (errors.isEmpty()) {
-            fileRepo.save(fo);
-            newsRepo.save(news);
-            attributes.addFlashAttribute("success", "Uutinen on onnistuneesti julkaistu!");
-            return "redirect:/modeNews/" + news.getId();
+        News n = newsHandler.save(file, otsikko, ingressi, teksti, categories, writers, attributes);
+        if (n != null) {
+            return "redirect:/news/" + n.getId();
         } else {
-            attributes.addFlashAttribute("errors", errors);
             return "redirect:/newsForm";
         }
 
@@ -102,21 +93,7 @@ public class NewsFormController {
 
     @DeleteMapping("/news/{id}")
     public String deleteNews(@PathVariable("id") long id) {
-        News news = newsRepo.getOne(id);
-        newsRepo.delete(news);
+        newsHandler.deleteNews(id);
         return "redirect:/";
     }
-
-    private List<Category> getNotHavingCategories(News n) {
-        List<Category> cats = catRepo.findAll();
-        cats.removeAll(n.getCategories());
-        return cats;
-    }
-
-    private List<Writer> getNotHavingWriters(News n) {
-        List<Writer> writers = writerRepo.findAll();
-        writers.removeAll(n.getWriters());
-        return writers;
-    }
-
 }

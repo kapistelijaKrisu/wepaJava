@@ -5,85 +5,36 @@
     </head>
     <body>
         <br/>
-        <div>
-            <div class="dropdown">
-                <a class="dropbtn" href="/">Etusivu</a>       
-            </div>
-            <div class="dropdown">
-                <button onclick="myFunction('categoryDropdown')" class="dropbtn">Kategoriat</button>
-                <div id="categoryDropdown" class="dropdown-content">
-                    <a th:each="categ:${categories}" th:href="@{/news/category/{id}/0(id=${categ.id})}" th:text="${categ.name}">categ name</a>
-                </div>
-            </div> 
-
-            <div class="dropdown">
-                <button onclick="myFunction('genericDropdown')" class="dropbtn">Muut lajitteluperusteet</button>
-                <div id="genericDropdown" class="dropdown-content">
-                    <a href="/news/category/0/0">Uutuusjärjestys</a>
-                    <a href="/news/views/week/0">Viime Viikon luetuimmat</a>
-                </div>
-            </div> 
-            <div class="dropdown">
-                <button onclick="myFunction('god')" class="dropbtn">Hallintapaneeli</button>
-                <div id="god" class="dropdown-content">
-                    <a href="/newsForm">Julkaise uusi artikkeli</a>
-                    <a href="/micromanagement">Mikromanagerointi</a>
-                </div>
-
-            </div>
-
-            <div class="dropdown"> 
-                <button onclick="myFunction('newest')" class="dropbtn">kaikkien aikojen 5 katsotuinta</button>
-                <div id="newest" class="dropdown-content">
-                    <ol>
-                        <li th:each="neew:${top5}">
-                            <a th:href="@{/news/{id}(id=${neew.id})}" th:text="${neew.label}">Lue lisää!</a>  
-                        </li>                       
-                    </ol>
-                </div>
-            </div> 
-            <div class="dropdown"> 
-                <button onclick="myFunction('tops')" class="dropbtn">5 uusinta</button>
-                <div id="tops" class="dropdown-content">
-                    <ol>
-                        <li th:each="neew:${newest}">
-                            <a th:href="@{/news/{id}(id=${neew.id})}" th:text="${neew.label}">Lue lisää!</a>  
-                        </li>                       
-                    </ol>
-                </div>
-            </div>  
-            <br/><br/>
-            <div class="dropdown">
-                <form class="dropbtn" th:method="GET" th:action="@{/modeNews/{id}(id=${news.id})}">  
-                    <input type="submit" value="Muokkaa!"/> 
-                </form>
-            </div>
-            <div class="dropdown">
-                <form class="dropbtn" th:method="DELETE" th:action="@{/news/{id}(id=${news.id})}">                    
-                    <input type="submit" value="Poista!"/> 
-                </form>
-            </div>
-
+        <div class="dropdown">
+            <form class="dropbtn" th:method="GET" th:action="@{/modeNews/{id}(id=${news.id})}">  
+                <input type="submit" value="Muokkaa!"/> 
+            </form>
         </div>
+        <div class="dropdown">
+            <form class="dropbtn" th:method="DELETE" th:action="@{/news/{id}(id=${news.id})}">                    
+                <input type="submit" value="Poista!"/> 
+            </form>
+        </div>
+        <br/><br/>
+        <div th:replace="fragments/header :: header"></div>
         <br/>
 
         <div>
-            <h1 th:text="${news.label}"></h1>
-            <h4 th:text="${news.ingressi}"/>
-            <img th:src="@{/images/{id}(id=${news.id})}" style="width:300px" alt="Kuva ei näy!"/><br/>
+            <article>
 
-            <textarea readonly="readonly" style="width: 1077px; height: 266px;" th:text="${news.text}"></textarea>   
-        </div>
-        <br/><br/><br/>
-        <div>
-            Kirjoittajat:<br/>
-            <ul>
-                <li th:each="writer : ${news.writers}" th:text="${writer.name}"/>
-            </ul>
-            Kategoriat<br/>
+                <h1 th:text="${news.label}"></h1>
+                <img th:src="@{/images/{id}(id=${news.id})}" style="width:300px" alt="Kuva ei näy!"/><br/>
+                <h4 th:text="${news.ingressi}"/>
+                <p th:text="${news.text}">teksti</p>
 
-            <a th:each="categ:${news.categories}" th:href="@{/news/category/{id}/0(id=${categ.id})}" th:text="${categ.name}">categ name</a>
-
+                <br/><br/><br/>
+                Kirjoittajat:<br/>
+                <ul>
+                    <li th:each="writer : ${news.writers}" th:text="${writer.name}"/>
+                </ul>
+                Kategoriat<br/>
+                <a th:each="categ:${news.categories}" th:href="@{/news/category/{id}/0(id=${categ.id})}" th:text="${categ.name}">categ name</a>
+            </article>  
 
         </div>
         <script>
@@ -113,6 +64,19 @@
 
 
     <style>
+        article {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            text-align: justify;
+        }
+
+        article p {
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ns-hyphens: auto;
+            hyphens: auto;
+        }
         /* Dropdown Button */
         .dropbtn {
             background-color: #4CAF50;

@@ -6,54 +6,8 @@
     <body>
         <h1>Uutiset</h1> 
         <br/>
-        <div>
-            <div class="dropdown">
-                <a class="dropbtn" href="/">Etusivu</a>       
-            </div>
-            <div class="dropdown">
-                <button onclick="myFunction('categoryDropdown')" class="dropbtn">Kategoriat</button>
-                <div id="categoryDropdown" class="dropdown-content">
-                    <a th:each="categ:${categories}" th:href="@{/news/category/{id}/0(id=${categ.id})}" th:text="${categ.name}">categ name</a>
-                </div>
-            </div> 
-
-            <div class="dropdown">
-                <button onclick="myFunction('genericDropdown')" class="dropbtn">Muut lajitteluperusteet</button>
-                <div id="genericDropdown" class="dropdown-content">
-                    <a href="/news/category/0/0">Uutuusjärjestys</a>
-                    <a href="/news/views/week/0">Viime Viikon luetuimmat</a>
-                </div>
-            </div> 
-            <div class="dropdown">
-                <button onclick="myFunction('god')" class="dropbtn">Hallintapaneeli</button>
-                <div id="god" class="dropdown-content">
-                    <a href="/newsForm">Julkaise uusi artikkeli</a>
-                    <a href="/micromanagement">Mikromanagerointi</a>
-                </div>
-
-            </div>
-
-            <div class="dropdown"> 
-                <button onclick="myFunction('newest')" class="dropbtn">kaikkien aikojen 5 katsotuinta</button>
-                <div id="newest" class="dropdown-content">
-                    <ol>
-                        <li th:each="neew:${top5}">
-                            <a th:href="@{/news/{id}(id=${neew.id})}" th:text="${neew.label}">Lue lisää!</a>  
-                        </li>                       
-                    </ol>
-                </div>
-            </div> 
-            <div class="dropdown"> 
-                <button onclick="myFunction('tops')" class="dropbtn">5 uusinta</button>
-                <div id="tops" class="dropdown-content">
-                    <ol>
-                        <li th:each="neew:${newest}">
-                            <a th:href="@{/news/{id}(id=${neew.id})}" th:text="${neew.label}">Lue lisää!</a>  
-                        </li>                       
-                    </ol>
-                </div>
-            </div>       
-        </div>
+        <div th:replace="fragments/header :: header"></div>
+        
         <div>
             <ul id="list">
                 <li th:each="neew:${news}">
