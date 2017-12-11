@@ -88,8 +88,8 @@ public class NewsHandlerTest {
         MultipartFile foMock = new MockMultipartFile("image/jpg", "image/jpg", "image/jpg", "sdsda".getBytes());
         RedirectAttributes mock = new RedirectAttributesModelMap();
 
-        News news = newsHandler.save(foMock, "aaaaaaaaaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaa",
+        News news = newsHandler.save(foMock, "aaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 new String[]{"" + a.getId()},
                 new String[]{"" + b.getId()},
                 mock);
