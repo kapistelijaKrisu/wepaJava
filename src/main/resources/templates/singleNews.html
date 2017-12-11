@@ -25,7 +25,7 @@
                 <h1 th:text="${news.label}"></h1>
                 <img th:src="@{/images/{id}(id=${news.id})}" style="width:300px" alt="Kuva ei näy!"/><br/>
                 <h4 th:text="${news.ingressi}"/>
-                <p th:text="${news.text}">teksti</p>
+                <p class="line-separator" th:text="${news.text}">teksti</p>
 
                 <br/><br/><br/>
                 Kirjoittajat:<br/>
@@ -69,13 +69,33 @@
             margin: 0 auto;
             width: 100%;
             text-align: justify;
+            display: block;
         }
+        
+
+.line-separator{
+
+    /* Keyword values */
+line-break: auto;
+line-break: loose;
+line-break: normal;
+line-break: strict;
+
+/* Global values */
+line-break: inherit;
+line-break: initial;
+line-break: unset;
+
+}
+
 
         article p {
             -webkit-hyphens: auto;
             -moz-hyphens: auto;
-            -ns-hyphens: auto;
+           
+            -ms-hyphens: auto;
             hyphens: auto;
+            display: block;
         }
         /* Dropdown Button */
         .dropbtn {
