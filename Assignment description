@@ -1,0 +1,9 @@
+# Aihe ja vaatimukset
+# Assignment description
+
+Kurssin harjoitustyönä tulee toteuttaa uutissivusto sekä uutisten luomiseen ja muokkaamiseen tarkoitettu hallintapaneeli. Jokaisella uutisella on otsikko, ingressi, kuva, uutisen konkreettinen teksti, sekä julkaisuaika. Uutiseen liittyy myös yksi tai useampi kirjoittaja sekä yksi tai useampi kategoria. Kategoriat voi merkitä navigaatiopalkkiin kuuluviksi, jolloin ne näkyvät myös käyttöliittymässä.
+
+Uutissivusto tarjoaa mahdollisuuden uutisten listaamiseen julkaisuajan perusteella, edellisen viikon aikana kertyneiden lukumäärien perusteella sekä kategorian perusteella. Uutissivuston etusivu listaa oletuksena viisi uusinta uutista siten, että jokaisesta uutisesta näkyy otsikko, ingressi ja kuva. Uutista klikkaamalla pääsee lukemaan koko uutisen.
+Muut listaukset näyttävät oletuksena uutisen otsikon sekä julkaisupäivämäärän, jotka toimivat linkkeinä konkreettiseen uutiseen. 
+
+Jokaisella uutissivulla tulee näkyä uutisen lisäksi myös julkaisuajan perusteella sekä lukumäärien perusteella luodut listat. Sivuston ylälaidassa tulee näkyä kategoriat.
